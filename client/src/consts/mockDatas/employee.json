@@ -1,0 +1,109 @@
+[
+  {
+    "id": 101,
+    "tenantId": 1,
+    "employeeCode": "EMP-000101",
+    "status": "ACTIVE",
+    "personalData": {
+      "firstName": "Əli",
+      "lastName": "Məmmədov",
+      "fatherName": "Əliyar",
+      "fullName": "Məmmədov Əli Əliyar",
+      "gender": "MALE",
+      "dateOfBirth": "1990-01-01",
+      "placeOfBirth": "Bakı şəhəri",
+      "nationality": "Azerbaijani",
+      "citizenship": "Azerbaijani",
+      "martialStatus": "Single",
+      "militaryStatus": "COMPLETED",
+      "disability": false
+    },
+    "contactData": {
+      "emails": [
+        {
+          "email": "eli.mammadov@company.az",
+          "type": "WORK",
+          "primary": true
+        }
+      ],
+      "phones": [
+        {
+          "number": "+994501111111",
+          "type": "MOBILE",
+          "primary": true
+        },
+        {
+          "number": "+994551111111",
+          "type": "HOME"
+        }
+      ],
+      "addresses": [
+        {
+          "type": "RESIDENTIAL",
+          "address": "Bakı şəhəri, Nərimanov r., ev 10",
+          "zipCode": "1001",
+          "country": "AZ"
+        }
+      ]
+    },
+    "jobData": {
+      "departmentId": "ObjectId",
+      "positionId": "ObjectId",
+      "managerId": "ObjectId",
+      "employmentType": "FULL_TIME",
+      "contractType": "INDEFINITE",
+      "startDate": "2020-03-01",
+      "endDate": null,
+      "workLocation": "HEAD_OFFICE",
+      "probationEndDate": "2020-06-01"
+    },
+
+    "profile": {
+      "firstName": "Əli",
+      "lastName": "Məmmədov",
+      "fullName": "Əli Məmmədov"
+    },
+    "contact": { "email": "eli.mammadov@company.az", "phone": "+994501111111" },
+    "position": {
+      "id": 11,
+      "title": "Baş Mühəndis",
+      "grade": "G6",
+      "level": 3
+    },
+    "department": {
+      "id": 1,
+      "name": "İT",
+      "parentId": null,
+      "path": "Baş Ofis/İT"
+    },
+    "employment": {
+      "status": "Aktiv",
+      "type": "Tam ştat",
+      "startDate": "2020-02-01",
+      "endDate": null
+    },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      {
+        "id": 9001,
+        "number": "CN-2020-001",
+        "type": "Əmək müqaviləsi",
+        "startDate": "2020-02-01",
+        "endDate": null,
+        "status": "Aktiv"
+      }
+    ],
+    "managerId": null,
+    "rbac": {
+      "role": "admin",
+      "permissions": [
+        "dashboard:read",
+        "hr:read",
+        "hr:create",
+        "hr:update",
+        "hr:delete"
+      ]
+    }
+  }
+]

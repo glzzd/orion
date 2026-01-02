@@ -1,0 +1,9 @@
+[
+  { "id": "id_card", "label": "Şəxsiyyət vəsiqəsi" },
+  { "id": "passport", "label": "Xarici pasport" },
+  { "id": "military_id", "label": "Hərbi bilet" },
+  { "id": "driving_license", "label": "Sürücülük vəsiqəsi" },
+  { "id": "health_cert", "label": "Sağlamlıq arayışı" },
+  { "id": "criminal_record", "label": "Məhkumluq barədə arayış" },
+  { "id": "other", "label": "Digər" }
+]

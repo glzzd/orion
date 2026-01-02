@@ -1,0 +1,6 @@
+[
+  { "id": 1, "username": "admin", "password": "admin123", "name": "Admin", "role": "admin", "employeeId": 101 },
+  { "id": 2, "username": "manager", "password": "manager123", "name": "Menecer", "role": "manager", "employeeId": 103 },
+  { "id": 3, "username": "employee", "password": "employee123", "name": "Əməkdaş", "role": "employee", "employeeId": 106 },
+  { "id": 4, "username": "user", "password": "user123", "name": "Kullanıcı", "role": "user", "employeeId": null }
+]

@@ -1,0 +1,198 @@
+[
+  {
+    "id": 101,
+    "profile": { "firstName": "Əli", "lastName": "Məmmədov", "fullName": "Əli Məmmədov" },
+    "contact": { "email": "eli.mammadov@company.az", "phone": "+994501111111" },
+    "position": { "id": 11, "title": "Baş Mühəndis", "grade": "G6", "level": 3 },
+    "department": { "id": 1, "name": "İT", "parentId": null, "path": "Baş Ofis/İT" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2020-02-01", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9001, "number": "CN-2020-001", "type": "Əmək müqaviləsi", "startDate": "2020-02-01", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": null,
+    "rbac": { "role": "admin", "permissions": ["dashboard:read", "hr:read", "hr:create", "hr:update", "hr:delete"] }
+  },
+  {
+    "id": 102,
+    "profile": { "firstName": "Aysel", "lastName": "Həsənova", "fullName": "Aysel Həsənova" },
+    "contact": { "email": "aysel.hasanova@company.az", "phone": "+994502222222" },
+    "position": { "id": 21, "title": "HR Mütəxəssisi", "grade": "G4", "level": 2 },
+    "department": { "id": 2, "name": "HR", "parentId": null, "path": "Baş Ofis/HR" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2022-05-10", "endDate": null },
+    "onboarding": { "status": "Davam edir", "completedPercent": 60 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9101, "number": "CN-2022-101", "type": "Əmək müqaviləsi", "startDate": "2022-05-10", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 103,
+    "rbac": { "role": "employee", "permissions": ["dashboard:read", "hr:read"] }
+  },
+  {
+    "id": 103,
+    "profile": { "firstName": "Nigar", "lastName": "Rzayeva", "fullName": "Nigar Rzayeva" },
+    "contact": { "email": "nigar.rzayeva@company.az", "phone": "+994503333333" },
+    "position": { "id": 22, "title": "HR Meneceri", "grade": "G5", "level": 3 },
+    "department": { "id": 2, "name": "HR", "parentId": null, "path": "Baş Ofis/HR" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2019-09-15", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Planlandı", "date": "2026-03-01" },
+    "contracts": [
+      { "id": 9201, "number": "CN-2019-201", "type": "Əmək müqaviləsi", "startDate": "2019-09-15", "endDate": "2024-09-15", "status": "Bitib" },
+      { "id": 9202, "number": "CN-2024-202", "type": "Əmək müqaviləsi", "startDate": "2024-09-16", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "manager", "permissions": ["dashboard:read", "hr:read", "hr:update"] }
+  },
+  {
+    "id": 104,
+    "profile": { "firstName": "Rəşad", "lastName": "Quliyev", "fullName": "Rəşad Quliyev" },
+    "contact": { "email": "reshad.quliyev@company.az", "phone": "+994504444444" },
+    "position": { "id": 31, "title": "Mühasib", "grade": "G4", "level": 2 },
+    "department": { "id": 3, "name": "Maliyyə", "parentId": null, "path": "Baş Ofis/Maliyyə" },
+    "employment": { "status": "Məzuniyyətdə", "type": "Tam ştat", "startDate": "2021-01-20", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9301, "number": "CN-2021-301", "type": "Əmək müqaviləsi", "startDate": "2021-01-20", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 105,
+    "rbac": { "role": "employee", "permissions": ["dashboard:read", "hr:read"] }
+  },
+  {
+    "id": 105,
+    "profile": { "firstName": "Kamran", "lastName": "Əhmədov", "fullName": "Kamran Əhmədov" },
+    "contact": { "email": "kamran.ahmadov@company.az", "phone": "+994505555555" },
+    "position": { "id": 32, "title": "Maliyyə Direktoru", "grade": "G7", "level": 4 },
+    "department": { "id": 3, "name": "Maliyyə", "parentId": null, "path": "Baş Ofis/Maliyyə" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2018-03-05", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9401, "number": "CN-2018-401", "type": "Əmək müqaviləsi", "startDate": "2018-03-05", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "manager", "permissions": ["dashboard:read", "hr:read", "hr:update"] }
+  },
+  {
+    "id": 106,
+    "profile": { "firstName": "Orxan", "lastName": "Hüseynov", "fullName": "Orxan Hüseynov" },
+    "contact": { "email": "orxan.huseynov@company.az", "phone": "+994506666666" },
+    "position": { "id": 12, "title": "Full-Stack Mühəndis", "grade": "G5", "level": 3 },
+    "department": { "id": 1, "name": "İT", "parentId": null, "path": "Baş Ofis/İT" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2023-07-01", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9501, "number": "CN-2023-501", "type": "Əmək müqaviləsi", "startDate": "2023-07-01", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "employee", "permissions": ["dashboard:read", "hr:read"] }
+  },
+  {
+    "id": 107,
+    "profile": { "firstName": "Sevinc", "lastName": "Məmmədli", "fullName": "Sevinc Məmmədli" },
+    "contact": { "email": "sevinc.mammadli@company.az", "phone": "+994507777777" },
+    "position": { "id": 41, "title": "Satış Meneceri", "grade": "G5", "level": 3 },
+    "department": { "id": 4, "name": "Satış", "parentId": null, "path": "Baş Ofis/Satış" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2017-11-20", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9601, "number": "CN-2017-601", "type": "Əmək müqaviləsi", "startDate": "2017-11-20", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 108,
+    "rbac": { "role": "manager", "permissions": ["dashboard:read", "hr:read", "hr:update"] }
+  },
+  {
+    "id": 108,
+    "profile": { "firstName": "Ramin", "lastName": "Səfərov", "fullName": "Ramin Səfərov" },
+    "contact": { "email": "ramin.safarov@company.az", "phone": "+994508888888" },
+    "position": { "id": 42, "title": "Satış Direktoru", "grade": "G7", "level": 4 },
+    "department": { "id": 4, "name": "Satış", "parentId": null, "path": "Baş Ofis/Satış" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2016-02-14", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9701, "number": "CN-2016-701", "type": "Əmək müqaviləsi", "startDate": "2016-02-14", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "manager", "permissions": ["dashboard:read", "hr:read", "hr:update"] }
+  },
+  {
+    "id": 109,
+    "profile": { "firstName": "Leyla", "lastName": "İsmayılova", "fullName": "Leyla İsmayılova" },
+    "contact": { "email": "leyla.ismayilova@company.az", "phone": "+994509999999" },
+    "position": { "id": 51, "title": "Hüquqşünas", "grade": "G4", "level": 2 },
+    "department": { "id": 5, "name": "Hüquq", "parentId": null, "path": "Baş Ofis/Hüquq" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2020-12-01", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9801, "number": "CN-2020-801", "type": "Əmək müqaviləsi", "startDate": "2020-12-01", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 110,
+    "rbac": { "role": "employee", "permissions": ["dashboard:read", "hr:read"] }
+  },
+  {
+    "id": 110,
+    "profile": { "firstName": "Elvin", "lastName": "Şahbazov", "fullName": "Elvin Şahbazov" },
+    "contact": { "email": "elvin.shahbazov@company.az", "phone": "+994501010101" },
+    "position": { "id": 52, "title": "Hüquq Departamentinin Rəhbəri", "grade": "G6", "level": 3 },
+    "department": { "id": 5, "name": "Hüquq", "parentId": null, "path": "Baş Ofis/Hüquq" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2015-06-18", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9901, "number": "CN-2015-901", "type": "Əmək müqaviləsi", "startDate": "2015-06-18", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "manager", "permissions": ["dashboard:read", "hr:read", "hr:update"] }
+  },
+  {
+    "id": 111,
+    "profile": { "firstName": "Murad", "lastName": "Qasımov", "fullName": "Murad Qasımov" },
+    "contact": { "email": "murad.qasimov@company.az", "phone": "+994501212121" },
+    "position": { "id": 61, "title": "Sistem Administratoru", "grade": "G4", "level": 2 },
+    "department": { "id": 1, "name": "İT", "parentId": null, "path": "Baş Ofis/İT" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2019-03-12", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9911, "number": "CN-2019-911", "type": "Əmək müqaviləsi", "startDate": "2019-03-12", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "employee", "permissions": ["dashboard:read", "hr:read"] }
+  },
+  {
+    "id": 112,
+    "profile": { "firstName": "Günel", "lastName": "Əliyeva", "fullName": "Günel Əliyeva" },
+    "contact": { "email": "gunel.aliyeva@company.az", "phone": "+994501313131" },
+    "position": { "id": 71, "title": "Marketinq Mütəxəssisi", "grade": "G4", "level": 2 },
+    "department": { "id": 7, "name": "Marketinq", "parentId": null, "path": "Baş Ofis/Marketinq" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2022-10-01", "endDate": null },
+    "onboarding": { "status": "Davam edir", "completedPercent": 40 },
+    "offboarding": { "status": "Yox", "date": null },
+    "contracts": [
+      { "id": 9921, "number": "CN-2022-921", "type": "Əmək müqaviləsi", "startDate": "2022-10-01", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 113,
+    "rbac": { "role": "employee", "permissions": ["dashboard:read", "hr:read"] }
+  },
+  {
+    "id": 113,
+    "profile": { "firstName": "Vüqar", "lastName": "Hacıyev", "fullName": "Vüqar Hacıyev" },
+    "contact": { "email": "vugar.haciyev@company.az", "phone": "+994501414141" },
+    "position": { "id": 72, "title": "Marketinq Direktoru", "grade": "G6", "level": 3 },
+    "department": { "id": 7, "name": "Marketinq", "parentId": null, "path": "Baş Ofis/Marketinq" },
+    "employment": { "status": "Aktiv", "type": "Tam ştat", "startDate": "2014-08-25", "endDate": null },
+    "onboarding": { "status": "Tamamlandı", "completedPercent": 100 },
+    "offboarding": { "status": "Planlandı", "date": "2025-12-31" },
+    "contracts": [
+      { "id": 9931, "number": "CN-2014-931", "type": "Əmək müqaviləsi", "startDate": "2014-08-25", "endDate": null, "status": "Aktiv" }
+    ],
+    "managerId": 101,
+    "rbac": { "role": "manager", "permissions": ["dashboard:read", "hr:read", "hr:update"] }
+  }
+]

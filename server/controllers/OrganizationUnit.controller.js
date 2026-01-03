@@ -2,7 +2,15 @@ const OrganizationUnitService = require("../services/OrganizationUnit.service");
 
 const getOrgUnits = async (req, res) => {
   try {
-    const tenantId = req.user.tenantId;
+    let tenantId = req.user.tenantId;
+    
+    // Check if user is SUPER_ADMIN
+    const isSuperAdmin = req.user.roles.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    
+    if (isSuperAdmin && req.query.tenantId) {
+        tenantId = req.query.tenantId;
+    }
+
     const orgUnits = await OrganizationUnitService.getAllOrgUnits(tenantId);
     res.status(200).json(orgUnits);
   } catch (error) {

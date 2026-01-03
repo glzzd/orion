@@ -2,7 +2,7 @@ const EmployeeService = require("../services/Employee.service");
 
 const getEmployees = async (req, res) => {
   try {
-    const { page, limit, search, sortKey, sortDir, tenantId: queryTenantId } = req.query;
+    const { page, limit, search, sortKey, sortDir, tenantId: queryTenantId, roles, orgUnits, statuses, genders } = req.query;
     let tenantId = req.user.tenantId;
 
     // Check if user is SUPER_ADMIN
@@ -24,6 +24,10 @@ const getEmployees = async (req, res) => {
       search,
       sortKey,
       sortDir,
+      roles: roles ? (Array.isArray(roles) ? roles : [roles]) : undefined,
+      orgUnits: orgUnits ? (Array.isArray(orgUnits) ? orgUnits : [orgUnits]) : undefined,
+      statuses: statuses ? (Array.isArray(statuses) ? statuses : [statuses]) : undefined,
+      genders: genders ? (Array.isArray(genders) ? genders : [genders]) : undefined
     });
 
     res.status(200).json(result);

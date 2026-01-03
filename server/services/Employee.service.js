@@ -1,11 +1,27 @@
 const Employee = require("../models/Employee");
 
-const getAllEmployees = async (tenantId, { page = 1, limit = 10, search, sortKey, sortDir }) => {
+const getAllEmployees = async (tenantId, { page = 1, limit = 10, search, sortKey, sortDir, roles, orgUnits, statuses, genders }) => {
   const skip = (page - 1) * limit;
   const query = {};
 
   if (tenantId) {
     query.tenantId = tenantId;
+  }
+
+  if (roles && roles.length > 0) {
+    query["jobData.primaryAssignment.role"] = { $in: roles };
+  }
+
+  if (orgUnits && orgUnits.length > 0) {
+    query["jobData.primaryAssignment.organizationUnitId"] = { $in: orgUnits };
+  }
+
+  if (statuses && statuses.length > 0) {
+    query["status"] = { $in: statuses };
+  }
+
+  if (genders && genders.length > 0) {
+    query["personalData.gender"] = { $in: genders };
   }
 
   if (search) {

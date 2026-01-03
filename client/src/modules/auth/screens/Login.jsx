@@ -17,7 +17,7 @@ export default function Login() {
           className="absolute left-15 top-15 z-10"
         />
         <div className="absolute left-15 bottom-30 text-white z-10 flex flex-col space-y-2 max-w-lg">
-          <span className="text-3xl font-bold">SİMURQ ERP Sistemi</span>
+          <span className="text-3xl font-bold">ORİON ERP Sistemi</span>
           <span className="text-sm leading-relaxed text-white/90">
             Müasir müəssisələr üçün nəzərdə tutulmuş, maliyyə, insan resursları,
             əməliyyat və analitika proseslərini vahid platformada birləşdirən

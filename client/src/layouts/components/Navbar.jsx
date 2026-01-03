@@ -33,6 +33,13 @@ import {
   Stethoscope,
   ShieldCheck,
   RefreshCcw,
+  Lock,
+  Settings,
+  Plus,
+  List,
+  Activity,
+  Shield,
+  FileKey
 } from "lucide-react";
 
 import {
@@ -120,23 +127,16 @@ const ICONS = {
   // MISC
   // =====================
   refresh: RefreshCcw,
+  "shield-check": ShieldCheck,
+  "lock-closed": Lock,
+  settings: Settings,
+  plus: Plus,
+  list: List,
+  activity: Activity,
+  shield: Shield,
+  "file-key": FileKey,
+  cog: Settings
 };
-
-function getRolePermissions(role) {
-  switch (role) {
-    case "admin":
-      return [
-        PERMISSIONS.DASHBOARD.READ,
-        PERMISSIONS.HR.READ,
-        PERMISSIONS.HR.CREATE,
-        PERMISSIONS.HR.UPDATE,
-        PERMISSIONS.HR.DELETE,
-      ];
-    case "user":
-    default:
-      return [PERMISSIONS.DASHBOARD.READ, PERMISSIONS.HR.READ];
-  }
-}
 
 function hasAccess(rbac, userPerms) {
   if (!rbac) return true;
@@ -148,18 +148,22 @@ function hasAccess(rbac, userPerms) {
 
 export default function Navbar() {
   const { user } = useAuth();
-  const perms = getRolePermissions(user?.role);
+  const perms = user?.permissions || [];
   const location = useLocation();
 
   return (
     <NavigationMenu viewport={true} className="text-white w-full">
       <NavigationMenuList className="gap-3">
         {MENUITEMS.map((item) => {
+          // 1. Check parent access first
+          if (!hasAccess(item.rbac, perms)) return null;
+
           const groups = (item.children || []).filter(
             (g) => hasAccess(g.rbac, perms) || (g.children || []).some((cc) => hasAccess(cc.rbac, perms))
           );
-          const showParent = hasAccess(item.rbac, perms) || groups.length > 0;
-          if (!showParent) return null;
+
+          // 2. If parent implies a dropdown (has children) but no children are accessible, hide it
+          if (item.children && item.children.length > 0 && groups.length === 0) return null;
 
           const Icon = ICONS[item.icon];
           const groupPaths = [];
@@ -183,7 +187,7 @@ export default function Navbar() {
                     <span className="text-xs font-medium leading-none">{item.title}</span>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="bg-[#fff] p-6 ring-1 ring-white/10 rounded-md  w-full">
-                    <div className="grid grid-cols-2 md:grid-cols-8 gap-6 [&>div]:min-w-0 md:[&>div]:pr-6 [&>div]:border-r [&>div]:border-[#124459]/10 [&>div:nth-child(8n)]:border-r-0 md:[&>div:nth-child(8n)]:border-r-0">
+                    <div className="grid grid-cols-2 md:grid-cols-6 gap-6 [&>div]:min-w-0 md:[&>div]:pr-6 [&>div]:border-r [&>div]:border-[#124459]/10 [&>div:nth-child(6n)]:border-r-0 md:[&>div:nth-child(6n)]:border-r-0">
                       {groups.map((group) => {
                         const GroupIcon = ICONS[group.icon];
                         const groupChildren = (group.children || []).filter((c) => hasAccess(c.rbac, perms));

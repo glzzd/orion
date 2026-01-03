@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const JobAssignmentSchema = new mongoose.Schema(
   {
@@ -133,4 +133,4 @@ EmployeeSchema.index({
   "jobData.primaryAssignment.organizationUnitPath": 1
 });
 
-export default mongoose.model("Employee", EmployeeSchema);
+module.exports = mongoose.model("Employee", EmployeeSchema);

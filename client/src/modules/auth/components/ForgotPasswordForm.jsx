@@ -2,21 +2,20 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/consts/routes";
+import { toast } from "sonner";
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
     
     // Mock API call
     setTimeout(() => {
       setLoading(false);
-      setMessage("Şifrə sıfırlama linki e-poçtunuza göndərildi.");
+      toast.success("Şifrə sıfırlama linki e-poçtunuza göndərildi.");
     }, 1000);
   };
 
@@ -34,8 +33,6 @@ export default function ForgotPasswordForm() {
           required
         />
       </div>
-      
-      {message && <div className="text-sm text-green-600">{message}</div>}
       
       <Button type="submit" disabled={loading} className="w-full cursor-pointer hover:scale-[1.02]">
         {loading ? "Göndərilir..." : "Link göndər"}

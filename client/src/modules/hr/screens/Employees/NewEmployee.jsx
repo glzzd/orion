@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   User,
@@ -137,7 +138,8 @@ const NewEmployee = () => {
     // Simulating API call
     setTimeout(() => {
       setLoading(false);
-      navigate("/hr/employees");
+      toast.success("Yeni əməkdaş uğurla əlavə edildi");
+      navigate("/human-resources/employees");
     }, 1500);
   };
 

@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth.js";
 import { ROUTE_PATHS } from "@/consts/routes";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -12,19 +13,18 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
     const res = await login(username.trim(), password, rememberMe);
     setLoading(false);
     if (res.ok) {
+      toast.success("Uğurla daxil oldunuz");
       navigate(ROUTE_PATHS.DASHBOARD, { replace: true });
     } else {
-      setError(res.error);
+      toast.error(res.error || "Giriş zamanı xəta baş verdi");
     }
   };
 
@@ -85,7 +85,6 @@ export default function LoginForm() {
         </Link>
       </div>
 
-      {error && <div className="text-sm text-red-600">{error}</div>}
       <Button type="submit" disabled={loading} className="w-full cursor-pointer hover:scale-[1.02]">
         {loading ? "Daxil olunur..." : "Daxil ol"}
       </Button>

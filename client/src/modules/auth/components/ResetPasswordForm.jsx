@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/consts/routes";
+import { toast } from "sonner";
 
 export default function ResetPasswordForm() {
   const navigate = useNavigate();
@@ -10,20 +11,18 @@ export default function ResetPasswordForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (password.length < 6) {
-      setError("Şifrə ən az 6 simvol olmalıdır.");
+      toast.error("Şifrə ən az 6 simvol olmalıdır.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Şifrələr uyğun gəlmir.");
+      toast.error("Şifrələr uyğun gəlmir.");
       return;
     }
 
@@ -31,7 +30,7 @@ export default function ResetPasswordForm() {
     // Mock API call
     setTimeout(() => {
       setLoading(false);
-      alert("Şifrəniz uğurla yeniləndi. Zəhmət olmasa yenidən daxil olun.");
+      toast.success("Şifrəniz uğurla yeniləndi. Zəhmət olmasa yenidən daxil olun.");
       navigate(`/${ROUTE_PATHS.LOGIN}`);
     }, 1000);
   };
@@ -79,8 +78,6 @@ export default function ResetPasswordForm() {
           </button>
         </div>
       </div>
-
-      {error && <div className="text-sm text-red-600">{error}</div>}
 
       <Button type="submit" disabled={loading} className="w-full cursor-pointer hover:scale-[1.02]">
         {loading ? "Yenilənir..." : "Şifrəni yenilə"}

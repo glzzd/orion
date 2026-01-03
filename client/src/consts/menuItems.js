@@ -306,4 +306,134 @@ export const MENUITEMS = [
     },
   ],
   },
+  
+  // =====================================================
+  // ADMIN PANEL
+  // =====================================================
+  {
+    id: "admin",
+    title: "Sistem inzibatçısı",
+    icon: "shield-check",
+    rbac: { any: [PERMISSIONS.ADMIN.READ] },
+    children: [
+      // 1. ORGANİZASİYALAR
+      {
+        id: "admin-organizations",
+        title: "Organizasiyalar",
+        icon: "building",
+        rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
+        children: [
+          {
+            id: "admin-org-add",
+            title: "Yeni organisasiya",
+            path: "/admin/organizations/add",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
+          },
+          {
+            id: "admin-org-list",
+            title: "Bütün organisasiyalar",
+            path: "/admin/organizations",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
+          },
+        ]
+      },
+
+      // 2. İSTİFADƏÇİLƏR
+      {
+        id: "admin-users",
+        title: "İstifadəçilər",
+        icon: "users",
+        rbac: { any: [PERMISSIONS.ADMIN.USERS] },
+        children:[
+          {
+            id: "admin-user-add",
+            title: "Yeni istifadəçi",
+            path: "/admin/users/add",
+            icon: "user-plus",
+            rbac: { any: [PERMISSIONS.ADMIN.USERS] },
+          },
+          {
+            id: "admin-users-list",
+            title: "Bütün istifadəçilər",
+            path: "/admin/users",
+            icon: "users",
+            rbac: { any: [PERMISSIONS.ADMIN.USERS] },
+          },
+        ]
+      },
+
+      // 3. ROLLAR VƏ SƏLAHİYYƏTLƏR
+      {
+        id: "admin-roles",
+        title: "Rollar və səlahiyyətlər",
+        icon: "shield",
+        rbac: { any: [PERMISSIONS.ADMIN.ROLES] },
+        children:[
+          {
+            id: "admin-role-add",
+            title: "Yeni rol",
+            path: "/admin/roles/add",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.ADMIN.ROLES] },
+          },
+          {
+            id: "admin-roles-list",
+            title: "Bütün rollar",
+            path: "/admin/roles",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.ADMIN.ROLES] },
+          },
+          {
+            id: "admin-permission-add",
+            title: "Yeni səlahiyyət",
+            path: "/admin/permissions/add",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.ADMIN.PERMISSIONS] },
+          },
+          {
+            id: "admin-permissions-list",
+            title: "Bütün səlahiyyətlər",
+            path: "/admin/permissions",
+            icon: "file-key",
+            rbac: { any: [PERMISSIONS.ADMIN.PERMISSIONS] },
+          },
+        ]
+      },
+
+      // 4. AUDİT VƏ LOGLAR
+      {
+        id: "admin-audit",
+        title: "Audit və Loglar",
+        icon: "activity",
+        rbac: { any: [PERMISSIONS.ADMIN.AUDIT, PERMISSIONS.ADMIN.LOGS] },
+        children: [
+          {
+            id: "admin-logs",
+            title: "Sistem Logları",
+            path: "/admin/logs",
+            icon: "clipboard-list",
+            rbac: { any: [PERMISSIONS.ADMIN.LOGS] },
+          },
+          {
+            id: "admin-audit-logs",
+            title: "Audit Jurnalı",
+            path: "/admin/audit",
+            icon: "activity",
+            rbac: { any: [PERMISSIONS.ADMIN.AUDIT] },
+          },
+        ]
+      },
+
+      // 5. AYARLAR
+      {
+        id: "admin-settings",
+        title: "Sistem Ayarları",
+        path: "/admin/settings",
+        icon: "settings",
+        rbac: { any: [PERMISSIONS.ADMIN.SETTINGS] },
+      },
+    ],
+  },
 ];

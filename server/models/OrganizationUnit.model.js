@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const OrganizationUnitSchema = new mongoose.Schema(
   {
@@ -85,7 +85,4 @@ const OrganizationUnitSchema = new mongoose.Schema(
 // tenant daxilində path unikaldır
 OrganizationUnitSchema.index({ tenantId: 1, path: 1 }, { unique: true });
 
-export default mongoose.model(
-  "OrganizationUnit",
-  OrganizationUnitSchema
-);
+module.exports = mongoose.model("OrganizationUnit", OrganizationUnitSchema);

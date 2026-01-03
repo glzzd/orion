@@ -8,13 +8,21 @@ import ResetPassword from "@/modules/auth/screens/ResetPassword.jsx";
 import Dashboard from "@/modules/dashboard/screens/Dashboard.jsx";
 import Employees from "@/modules/hr/screens/Employees/Employees.jsx";
 import NewEmployee from "@/modules/hr/screens/Employees/NewEmployee.jsx";
+import AllUsersPage from "@/modules/admin/users/screens/AllUsersPage.jsx";
+import AddNewUserPage from "@/modules/admin/users/screens/AddNewUserPage.jsx";
+import EditUserPage from "@/modules/admin/users/screens/EditUserPage.jsx";
 import NotFound from "@/modules/common/screens/NotFound.jsx";
 import { ROUTE_PATHS } from "@/consts/routes";
+import { PERMISSIONS } from "@/consts/permissions";
+import PermissionGuard from "@/components/PermissionGuard";
+
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <Toaster />
         <Routes>
           <Route element={<PublicLayout />}> 
             <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
@@ -23,9 +31,36 @@ function App() {
           </Route>
 
           <Route element={<PrivateLayout />}> 
-            <Route path={ROUTE_PATHS.DASHBOARD} element={<Dashboard />} />
-            <Route path="/human-resources/employees" element={<Employees />} />
-            <Route path="/human-resources/employees/new" element={<NewEmployee />} />
+            <Route path={ROUTE_PATHS.DASHBOARD} element={
+              <PermissionGuard requiredPermission={PERMISSIONS.DASHBOARD.READ}>
+                <Dashboard />
+              </PermissionGuard>
+            } />
+            <Route path="/human-resources/employees" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.HR.READ}>
+                <Employees />
+              </PermissionGuard>
+            } />
+            <Route path="/human-resources/employees/new" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.HR.CREATE}>
+                <NewEmployee />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/users" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.USERS}>
+                <AllUsersPage />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/users/add" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.USERS}>
+                <AddNewUserPage />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/users/edit/:id" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.USERS}>
+                <EditUserPage />
+              </PermissionGuard>
+            } />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -5,7 +5,8 @@ const RoleSchema = new mongoose.Schema(
     name: { type: String, required: true },
     description: String,
     tenantId: { type: mongoose.Schema.Types.ObjectId, ref: "Organization", required: true },
-    permissions: [{ type: String }],
+    permissions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Permission" }],
+    isSystem: { type: Boolean, default: false },
     audit: {
       createdBy: mongoose.Schema.Types.ObjectId,
       updatedBy: mongoose.Schema.Types.ObjectId

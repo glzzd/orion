@@ -7,7 +7,9 @@ const refreshToken = async (refreshToken) => {
   const user = await User.findById(decoded.id);
 
   if (!user || !user.refreshTokens.some((t) => t.token === refreshToken)) {
-    throw new Error("Refresh token geçersiz");
+    const error = new Error("Refresh token geçersiz");
+    error.statusCode = 401;
+    throw error;
   }
   user.refreshTokens = user.refreshTokens.filter(
     (t) => t.token !== refreshToken
@@ -48,9 +50,11 @@ const register = async ({ username, email, password }) => {
     $or: [{ email }, { username }],
   });
   if (existingUser) {
-    throw new Error(
+    const error = new Error(
       "Bu istifadəçi adı və ya e-mail ünvanı artıq sistemdə mövcuddur."
     );
+    error.statusCode = 409;
+    throw error;
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -63,23 +67,63 @@ const login = async ({ identifier, password }) => {
   // Allow login with either email or username
   const user = await User.findOne({
     $or: [{ email: identifier }, { username: identifier }]
-  }).select("+password"); // Explicitly select password since it's set to select: false in schema
+  })
+  .select("+password")
+  .populate({
+    path: "roles.roleId",
+    populate: {
+      path: "permissions"
+    }
+  });
 
-  if (!user) throw new Error("İstifadəçi adı/E-mail və ya şifrə yanlışdır");
+  if (!user) {
+    const error = new Error("İstifadəçi adı və ya şifrə yanlışdır");
+    error.statusCode = 401;
+    throw error;
+  }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) throw new Error("İstifadəçi adı/E-mail və ya şifrə yanlışdır");
+  if (!isPasswordValid) {
+    const error = new Error("İstifadəçi adı və ya şifrə yanlışdır");
+    error.statusCode = 401;
+    throw error;
+  }
 
   const { accessToken, refreshToken } = generateTokens(user._id);
   await saveRefreshToken(user._id, refreshToken);
 
-  return { token: accessToken, refreshToken, user: { 
-    id: user._id, 
-    username: user.username, 
-    email: user.email, 
-    firstName: user.personalData?.firstName,
-    lastName: user.personalData?.lastName
-  }};
+  // Extract permissions from roles
+  const permissions = new Set();
+  const roleNames = [];
+  
+  if (user.roles) {
+    user.roles.forEach((userRole) => {
+      if (userRole.roleId) {
+        roleNames.push(userRole.roleId.name);
+        if (userRole.roleId.permissions) {
+          userRole.roleId.permissions.forEach((permission) => {
+            if (permission && permission.slug) {
+              permissions.add(permission.slug);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  return { 
+    token: accessToken, 
+    refreshToken, 
+    user: { 
+      id: user._id, 
+      username: user.username, 
+      email: user.email, 
+      firstName: user.personalData?.firstName,
+      lastName: user.personalData?.lastName,
+      roles: roleNames,
+      permissions: Array.from(permissions)
+    } 
+  };
 };
 
 module.exports = {

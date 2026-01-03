@@ -23,8 +23,9 @@ const UserSchema = new mongoose.Schema(
     status: { type: String, enum: ["ACTIVE", "INACTIVE", "TERMINATED"], default: "ACTIVE" },
     roles: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Role"
+        roleId: { type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true },
+        assignedAt: { type: Date, default: Date.now },
+        assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
       }
     ],
     refreshTokens: [

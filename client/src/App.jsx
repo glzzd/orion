@@ -15,6 +15,7 @@ import AddNewOrganizations from "@/modules/admin/organizations/screens/AddNewOrg
 import AllOrganizationsPage from "@/modules/admin/organizations/screens/AllOrganizationsPage.jsx";
 import OrganizationDetailsPage from "@/modules/admin/organizations/screens/OrganizationDetailsPage.jsx";
 import OrganizationStructurePage from "@/modules/admin/organizations/screens/OrganizationStructurePage.jsx";
+import OrganizationStructuresPage from "@/modules/admin/organizations/screens/OrganizationStructuresPage.jsx";
 import NotFound from "@/modules/common/screens/NotFound.jsx";
 import { ROUTE_PATHS } from "@/consts/routes";
 import { PERMISSIONS } from "@/consts/permissions";
@@ -85,6 +86,11 @@ function App() {
             <Route path="/admin/organizations/:id/structure" element={
               <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ORGANIZATIONS}>
                 <OrganizationStructurePage />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/organizations/structures" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ORGANIZATIONS}>
+                <OrganizationStructuresPage />
               </PermissionGuard>
             } />
             <Route path="/admin/roles" element={

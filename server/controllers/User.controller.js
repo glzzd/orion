@@ -38,7 +38,12 @@ const createUser = async (req, res, next) => {
 // Update User
 const updateUser = async (req, res, next) => {
   try {
-    const user = await UserService.updateUser(req.user.tenantId, req.params.id, req.body, req.user.id);
+    let tenantId = req.user.tenantId;
+    const isSuperAdmin = req.user.roles?.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    if (isSuperAdmin && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
+    const user = await UserService.updateUser(tenantId, req.params.id, req.body, req.user.id);
     res.status(200).json({ message: "İstifadəçi məlumatları yeniləndi", user });
   } catch (error) {
     next(error);
@@ -58,7 +63,12 @@ const deleteUser = async (req, res, next) => {
 // Get User By ID
 const getUserById = async (req, res, next) => {
   try {
-    const user = await UserService.getUserById(req.user.tenantId, req.params.id);
+    let tenantId = req.user.tenantId;
+    const isSuperAdmin = req.user.roles?.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    if (isSuperAdmin) {
+      tenantId = req.query.tenantId || null;
+    }
+    const user = await UserService.getUserById(tenantId, req.params.id);
     res.status(200).json(user);
   } catch (error) {
     next(error);

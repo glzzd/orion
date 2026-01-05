@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { createUser } from "../api/userApi";
 import { getAllEmployees, getAllOrganizations, getAllRoles } from "@/modules/hr/api/employeeApi";
-import { ArrowLeft, Save, Loader2, Search, X } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Search, X, Eye, EyeOff, RefreshCcw } from "lucide-react";
 
 const AddNewUserPage = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const AddNewUserPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = React.useRef(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -116,6 +117,16 @@ const AddNewUserPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const generateRandomPassword = () => {
+    const length = 12;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+    let pwd = "";
+    for (let i = 0; i < length; i++) {
+      pwd += charset[Math.floor(Math.random() * charset.length)];
+    }
+    setFormData((prev) => ({ ...prev, password: pwd }));
   };
 
   const handleSubmit = async (e) => {
@@ -339,15 +350,34 @@ const AddNewUserPage = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Şifrə</Label>
-                <Input 
-                  id="password" 
-                  name="password" 
-                  type="password"
-                  value={formData.password} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="Şifrə təyin edin"
-                />
+                <div className="relative">
+                  <Input 
+                    id="password" 
+                    name="password" 
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="Şifrə təyin edin"
+                    className="pr-24"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={generateRandomPassword}
+                    className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    aria-label="Random password"
+                    title="Random şifrə"
+                  >
+                    <RefreshCcw className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="roleId">Rol</Label>

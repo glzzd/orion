@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { getUserById, updateUser, getAllRoles } from "../api/userApi";
-import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Eye, EyeOff, RefreshCcw } from "lucide-react";
 
 const EditUserPage = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const tenantParam = searchParams.get("tenantId") || "";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -25,6 +27,7 @@ const EditUserPage = () => {
     roleId: "",
     status: "ACTIVE"
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     fetchInitialData();
@@ -34,8 +37,8 @@ const EditUserPage = () => {
     try {
       setInitialLoading(true);
       const [rolesData, userData] = await Promise.all([
-        getAllRoles(),
-        getUserById(id)
+        getAllRoles(tenantParam ? { tenantId: tenantParam } : undefined),
+        getUserById(id, tenantParam ? { tenantId: tenantParam } : undefined)
       ]);
       
       setRoles(rolesData || []);
@@ -67,6 +70,15 @@ const EditUserPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const generateRandomPassword = () => {
+    const length = 12;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+    let pwd = "";
+    for (let i = 0; i < length; i++) {
+      pwd += charset[Math.floor(Math.random() * charset.length)];
+    }
+    setFormData((prev) => ({ ...prev, password: pwd }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -96,7 +108,7 @@ const EditUserPage = () => {
         payload.password = formData.password;
       }
 
-      await updateUser(id, payload);
+      await updateUser(id, tenantParam ? { ...payload, tenantId: tenantParam } : payload);
       toast.success("İstifadəçi məlumatları yeniləndi");
       navigate("/admin/users");
     } catch (error) {
@@ -201,13 +213,32 @@ const EditUserPage = () => {
 
             <div className="space-y-2">
               <Label htmlFor="password">Şifrə (Dəyişmək istəmirsinizsə boş buraxın)</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="pr-24"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={generateRandomPassword}
+                  className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  aria-label="Random password"
+                  title="Random şifrə"
+                >
+                  <RefreshCcw className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             <div className="space-y-2">

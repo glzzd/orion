@@ -7,8 +7,8 @@ export const getAllUsers = async (params) => {
   return data;
 };
 
-export const getUserById = async (id) => {
-  const { data } = await api.get(`${BASE_PATH}/${id}`);
+export const getUserById = async (id, params) => {
+  const { data } = await api.get(`${BASE_PATH}/${id}`, { params });
   return data;
 };
 
@@ -27,8 +27,8 @@ export const deleteUser = async (id) => {
   return data;
 };
 
-export const getAllRoles = async () => {
-  const { data } = await api.get("/rbac/roles");
+export const getAllRoles = async (params) => {
+  const { data } = await api.get("/rbac/roles", { params });
   return data;
 };
 

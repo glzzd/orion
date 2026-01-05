@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/consts/routes";
 import { toast } from "sonner";
@@ -12,6 +12,16 @@ export default function ResetPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const generateRandomPassword = () => {
+    const length = 12;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+    let pwd = "";
+    for (let i = 0; i < length; i++) {
+      pwd += charset[Math.floor(Math.random() * charset.length)];
+    }
+    setPassword(pwd);
+    setConfirmPassword(pwd);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +58,15 @@ export default function ResetPasswordForm() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <button
+            type="button"
+            onClick={generateRandomPassword}
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+            aria-label="Random password"
+            title="Random şifrə"
+          >
+            <RefreshCcw size={16} />
+          </button>
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}

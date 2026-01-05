@@ -1,4 +1,5 @@
-export const API_BASE_URL = "http://localhost:5001/api";
+const hostname = window.location.hostname;
+export const API_BASE_URL = `http://${hostname}:5001/api`;
 
 export const ENDPOINTS = {
   AUTH: {

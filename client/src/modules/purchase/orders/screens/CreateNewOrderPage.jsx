@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { ArrowLeft, Plus, ShoppingCart, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { getAllCategories, getSubCategories, getProductsByCategory } from "../../categories/api/categoryApi";
@@ -21,6 +22,9 @@ const CreateNewOrderPage = () => {
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
   const [selectedProductDetails, setSelectedProductDetails] = useState(null);
+  
+  // Editable Specifications State
+  const [editableSpecs, setEditableSpecs] = useState([]);
 
   // Loading States
   const [loadingMain, setLoadingMain] = useState(false);
@@ -50,6 +54,7 @@ const CreateNewOrderPage = () => {
     setSelectedSubCategory("");
     setSelectedProduct("");
     setSelectedProductDetails(null);
+    setEditableSpecs([]);
     setSubCategories([]);
     setProducts([]);
 
@@ -71,6 +76,7 @@ const CreateNewOrderPage = () => {
     setSelectedSubCategory(value);
     setSelectedProduct("");
     setSelectedProductDetails(null);
+    setEditableSpecs([]);
     setProducts([]);
 
     if (value) {
@@ -91,6 +97,19 @@ const CreateNewOrderPage = () => {
     setSelectedProduct(value);
     const product = products.find(p => p._id === value);
     setSelectedProductDetails(product || null);
+    
+    if (product && product.specifications) {
+        setEditableSpecs(product.specifications.map(s => ({ key: s.key, value: s.value })));
+    } else {
+        setEditableSpecs([]);
+    }
+  };
+
+  // Handle Spec Change
+  const handleSpecChange = (index, newValue) => {
+    const updatedSpecs = [...editableSpecs];
+    updatedSpecs[index].value = newValue;
+    setEditableSpecs(updatedSpecs);
   };
 
   const selectors = [
@@ -102,7 +121,8 @@ const CreateNewOrderPage = () => {
       onChange: handleMainCategoryChange,
       loading: loadingMain,
       disabled: loadingMain,
-      placeholder: "Ana kateqoriya seçin"
+      placeholder: "Ana kateqoriya seçin",
+      visible: true
     },
     {
       id: "sub",
@@ -113,7 +133,8 @@ const CreateNewOrderPage = () => {
       loading: loadingSub,
       disabled: !selectedMainCategory || loadingSub,
       placeholder: "Alt kateqoriya seçin",
-      emptyMsg: "Bu kateqoriyada alt kateqoriya yoxdur."
+      emptyMsg: "Bu kateqoriyada alt kateqoriya yoxdur.",
+      visible: !!selectedMainCategory
     },
     {
       id: "product",
@@ -124,7 +145,8 @@ const CreateNewOrderPage = () => {
       loading: loadingProducts,
       disabled: !selectedSubCategory || loadingProducts,
       placeholder: "Məhsul seçin",
-      emptyMsg: "Bu kateqoriyada məhsul yoxdur."
+      emptyMsg: "Bu kateqoriyada məhsul yoxdur.",
+      visible: !!selectedSubCategory
     }
   ];
 
@@ -150,8 +172,8 @@ const CreateNewOrderPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {selectors.map((selector) => (
-              <div key={selector.id} className="space-y-2">
+            {selectors.filter(s => s.visible).map((selector) => (
+              <div key={selector.id} className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
                 <Label>{selector.label}</Label>
                 <Select 
                   value={selector.value} 
@@ -201,12 +223,18 @@ const CreateNewOrderPage = () => {
 
                 <div>
                   <h4 className="text-sm font-medium mb-3 text-slate-900">Spesifikasyonlar</h4>
-                  {selectedProductDetails.specifications && selectedProductDetails.specifications.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {selectedProductDetails.specifications.map((spec, index) => (
-                        <div key={index} className="flex flex-col p-2 border border-slate-100 rounded-md bg-white">
-                          <span className="text-xs text-slate-400 uppercase tracking-wider">{spec.key}</span>
-                          <span className="text-sm font-medium text-slate-700">{spec.value}</span>
+                  {editableSpecs.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {editableSpecs.map((spec, index) => (
+                        <div key={index} className="space-y-2">
+                            <Label htmlFor={`spec-${index}`} className="text-xs text-slate-500 uppercase tracking-wider">{spec.key}</Label>
+                            <Input 
+                                id={`spec-${index}`}
+                                value={spec.value}
+                                onChange={(e) => handleSpecChange(index, e.target.value)}
+                                placeholder={spec.key}
+                                className="bg-white"
+                            />
                         </div>
                       ))}
                     </div>

@@ -56,6 +56,7 @@ import { Box } from "lucide-react";
 import { Tag } from "lucide-react";
 import { Archive } from "lucide-react";
 import { Upload } from "lucide-react";
+import { Clipboard } from "lucide-react";
 
 const ICONS = {
   // =====================

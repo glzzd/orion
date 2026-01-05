@@ -179,23 +179,22 @@ const OrganizationStructurePage = () => {
     }
   };
 
-  const renderNode = (node, level = 0, parentsLast = []) => {
+  const Connector = () => {
+    return (
+      <div className="relative w-4 h-6 mr-1">
+        <div className="absolute left-2 top-0 h-3 border-l border-slate-300" />
+        <div className="absolute left-2 top-1/2 -translate-y-1/2 w-3 border-t border-slate-300" />
+      </div>
+    );
+  };
+
+  const renderNode = (node, level = 0) => {
     const isOpen = !!expanded[node._id];
     return (
       <div key={node._id} className="pl-2">
         <div className="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#F7FAFF]">
           {level > 0 && (
-            <div className="flex items-stretch mr-1">
-              {parentsLast.map((pl, i) => (
-                <div key={i} style={{ width: 16, position: "relative" }}>
-                  <div style={{ position: "absolute", left: 8, top: 0, bottom: 0, width: 2, backgroundColor: pl ? "transparent" : "#94a3b8" }} />
-                </div>
-              ))}
-              <div style={{ width: 16, height: 24, position: "relative" }}>
-                <div style={{ position: "absolute", left: 8, top: 0, height: 12, width: 2, backgroundColor: "#94a3b8" }} />
-                <div style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", width: 12, height: 2, backgroundColor: "#94a3b8" }} />
-              </div>
-            </div>
+            <Connector />
           )}
           <button
             type="button"
@@ -213,9 +212,8 @@ const OrganizationStructurePage = () => {
           </button>
         </div>
         {isOpen && node.children.length > 0 && (
-          <div className="pl-6" style={{ position: "relative" }}>
-            <div style={{ position: "absolute", left: 8, top: 0, bottom: 0, width: 2, backgroundColor: "#94a3b8" }} />
-            {node.children.map((child, index) => renderNode(child, level + 1, [...parentsLast, index === node.children.length - 1]))}
+          <div className="pl-6 border-l border-slate-300">
+            {node.children.map((child) => renderNode(child, level + 1))}
           </div>
         )}
       </div>
@@ -223,7 +221,7 @@ const OrganizationStructurePage = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 overflow-hidden">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" onClick={() => navigate("/admin/organizations")}>
           <ArrowLeft className="size-5 text-[#124459]" />
@@ -235,11 +233,11 @@ const OrganizationStructurePage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-1 rounded-3xl bg-white p-6 shadow-[0_20px_50px_rgba(18,69,89,0.05)] ring-1 ring-[#124459]/10 h-[calc(100dvh-240px)] overflow-hidden">
+        <div className="col-span-1 rounded-3xl bg-white p-6 shadow-[0_20px_50px_rgba(18,69,89,0.05)] ring-1 ring-[#124459]/10 max-h-[calc(100dvh-220px)] overflow-hidden flex flex-col">
           {loading ? (
             <div className="py-10 text-center text-gray-500">Yüklənir...</div>
           ) : (
-            <div className="space-y-3 h-full flex flex-col">
+            <div className="space-y-3 flex-1 flex flex-col">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#124459]/50" />
                 <input
@@ -261,14 +259,14 @@ const OrganizationStructurePage = () => {
         </div>
 
         <div className="col-span-2 space-y-6">
-          <div className="rounded-3xl bg-white p-6 shadow-[0_20px_50px_rgba(18,69,89,0.05)] ring-1 ring-[#124459]/10 h-[calc(100dvh-240px)] overflow-hidden">
+          <div className="rounded-3xl bg-white p-6 shadow-[0_20px_50px_rgba(18,69,89,0.05)] ring-1 ring-[#124459]/10 max-h-[calc(100dvh-220px)] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-[#124459]">Struktur düzülüşü</h3>
               <div className="flex justify-end mb-2">
                 <Button variant="outline" size="sm" onClick={clearSelection} disabled={!selectedUnitId}>Seçimi sıfırla</Button>
               </div>
             </div>
-            <div className="h-full flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-hidden">
               
               <div className="flex items-center justify-between mb-2">
                 <div className="text-xs text-[#124459]/60">Cəmi: {filteredUnits.length}</div>

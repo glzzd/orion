@@ -46,3 +46,8 @@ export const getSubCategories = async (parentId) => {
     const response = await axiosInstance.get(`/purchase/categories/${parentId}/sub`);
     return response.data;
 };
+
+export const getProductsByCategory = async (categoryId) => {
+  const response = await axiosInstance.get(`/purchase/categories/${categoryId}/products`);
+  return response.data;
+};

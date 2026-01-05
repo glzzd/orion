@@ -91,6 +91,17 @@ const getSubCategories = async (req, res) => {
     }
 }
 
+const getProductsByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const products = await PurchaseCategoryService.getProductsByCategory(categoryId);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Get Products By Category Error:", error);
+    res.status(500).json({ message: "Məhsullar yüklənərkən xəta baş verdi.", error: error.message });
+  }
+};
+
 module.exports = {
   importCategories,
   getAllProducts,
@@ -99,5 +110,6 @@ module.exports = {
   updateCategory,
   updateProduct,
   getAllCategories,
-  getSubCategories
+  getSubCategories,
+  getProductsByCategory
 };

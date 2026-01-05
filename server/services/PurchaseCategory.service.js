@@ -182,6 +182,10 @@ const getSubCategories = async (parentId) => {
     return await PurchaseCategory.find({ parent: parentId }).sort({ name: 1 });
 };
 
+const getProductsByCategory = async (categoryId) => {
+  return await PurchaseProduct.find({ category: categoryId }).sort({ name: 1 });
+};
+
 module.exports = {
   importCategories,
   getAllProducts,
@@ -190,5 +194,6 @@ module.exports = {
   updateCategory,
   updateProduct,
   getAllCategories,
-  getSubCategories
+  getSubCategories,
+  getProductsByCategory
 };

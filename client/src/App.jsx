@@ -29,6 +29,7 @@ import UploadCategoriesPage from "./modules/purchase/categories/screens/UploadCa
 import AllCategoriesPage from "./modules/purchase/categories/screens/AllCategoriesPage";
 import AddNewCategoryPage from "./modules/purchase/categories/screens/AddNewCategoryPage";
 import AddNewProductPage from "./modules/purchase/categories/screens/AddNewProductPage";
+import CreateNewOrderPage from "./modules/purchase/orders/screens/CreateNewOrderPage";
 
 function App() {
   return (
@@ -127,6 +128,11 @@ function App() {
             <Route path="/purchase/categories/new" element={
               <PermissionGuard requiredPermission={PERMISSIONS.PURCHASE.CATEGORIES}>
                 <AddNewCategoryPage />
+              </PermissionGuard>
+            } />
+            <Route path="/purchase/orders/new" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.PURCHASE.CATEGORIES}>
+                <CreateNewOrderPage />
               </PermissionGuard>
             } />
           </Route>

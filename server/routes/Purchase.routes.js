@@ -24,5 +24,6 @@ router.put("/categories/:id", PurchaseCategoryController.updateCategory);
 router.put("/products/:id", PurchaseCategoryController.updateProduct);
 router.get("/categories", PurchaseCategoryController.getAllCategories);
 router.get("/categories/:parentId/sub", PurchaseCategoryController.getSubCategories);
+router.get("/categories/:categoryId/products", PurchaseCategoryController.getProductsByCategory);
 
 module.exports = router;

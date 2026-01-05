@@ -3,7 +3,10 @@ const bcrypt = require("bcrypt");
 
 const getAllUsers = async (tenantId, { page = 1, limit = 10, search, sortKey, sortDir }) => {
   const skip = (page - 1) * limit;
-  let query = { tenantId };
+  const query = {};
+  if (tenantId) {
+    query.tenantId = tenantId;
+  }
 
   if (search) {
     query.$or = [

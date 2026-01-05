@@ -317,30 +317,38 @@ export const MENUITEMS = [
     rbac: { any: [PERMISSIONS.ADMIN.READ] },
     children: [
       // 1. ORGANİZASİYALAR
+      
+
       {
         id: "admin-organizations",
-        title: "Organizasiyalar",
-        icon: "building",
-        rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
-        children: [
+        title: "Qurumlar və Təşkilatlar",
+        icon: "shield",
+        rbac: { any: [PERMISSIONS.ADMIN.ROLES] },
+        children:[
           {
-            id: "admin-org-add",
-            title: "Yeni organisasiya",
+            id: "admin-role-add",
+            title: "Yeni qurum və ya təşkilat",
             path: "/admin/organizations/add",
             icon: "plus",
             rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
           },
           {
-            id: "admin-org-list",
-            title: "Bütün organisasiyalar",
+            id: "admin-organizations-list",
+            title: "Bütün qurumlar və təşkilatlar",
             path: "/admin/organizations",
             icon: "list",
             rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
           },
+          {
+            id: "admin-organization-settings",
+            title: "Qurum və Təşkilat parametrləri",
+            path: "/admin/organizations/settings",
+            icon: "settings",
+            rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
+          }
+          
         ]
       },
-
-      // 2. İSTİFADƏÇİLƏR
       {
         id: "admin-users",
         title: "İstifadəçilər",
@@ -401,7 +409,7 @@ export const MENUITEMS = [
           },
         ]
       },
-
+      
       // 4. AUDİT VƏ LOGLAR
       {
         id: "admin-audit",

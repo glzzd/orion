@@ -11,12 +11,17 @@ import NewEmployee from "@/modules/hr/screens/Employees/NewEmployee.jsx";
 import AllUsersPage from "@/modules/admin/users/screens/AllUsersPage.jsx";
 import AddNewUserPage from "@/modules/admin/users/screens/AddNewUserPage.jsx";
 import EditUserPage from "@/modules/admin/users/screens/EditUserPage.jsx";
+import AddNewOrganizations from "@/modules/admin/organizations/screens/AddNewOrganizationsPage.jsx";
+import AllOrganizationsPage from "@/modules/admin/organizations/screens/AllOrganizationsPage.jsx";
+import OrganizationDetailsPage from "@/modules/admin/organizations/screens/OrganizationDetailsPage.jsx";
 import NotFound from "@/modules/common/screens/NotFound.jsx";
 import { ROUTE_PATHS } from "@/consts/routes";
 import { PERMISSIONS } from "@/consts/permissions";
 import PermissionGuard from "@/components/PermissionGuard";
 
 import { Toaster } from "@/components/ui/sonner";
+import AllRoles from "@/modules/admin/roles/screens/AllRoles.jsx";
+import AddNewRole from "@/modules/admin/roles/screens/AddNewRole.jsx";
 
 function App() {
   return (
@@ -59,6 +64,31 @@ function App() {
             <Route path="/admin/users/edit/:id" element={
               <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.USERS}>
                 <EditUserPage />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/organizations" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ORGANIZATIONS}>
+                <AllOrganizationsPage />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/organizations/add" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ORGANIZATIONS}>
+                <AddNewOrganizations />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/organizations/:id" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ORGANIZATIONS}>
+                <OrganizationDetailsPage />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/roles" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ROLES}>
+                <AllRoles />
+              </PermissionGuard>
+            } />
+            <Route path="/admin/roles/add" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ROLES}>
+                <AddNewRole />
               </PermissionGuard>
             } />
           </Route>

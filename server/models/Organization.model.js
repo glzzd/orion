@@ -43,6 +43,11 @@ const OrganizationSchema = new mongoose.Schema(
       clearanceManagement: { type: Boolean, default: false }
     },
 
+    logoUrl: {
+      type: String,
+      default: ""
+    },
+
     audit: {
       createdAt: {
         type: Date,

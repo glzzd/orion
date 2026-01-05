@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table.jsx";
 import { Button } from "@/components/ui/button.jsx";
@@ -6,6 +6,7 @@ import { Search, ArrowUpDown, CheckCircle, Clock, AlertTriangle, FileText, UserP
 import { useAuth } from "@/hooks/useAuth";
 import { PERMISSIONS } from "@/consts/permissions";
 import { getAllUsers, deleteUser } from "../api/userApi";
+import { getAllOrganizations } from "@/modules/hr/api/employeeApi";
 import { toast } from "sonner";
 
 export default function AllUsersPage() {
@@ -14,6 +15,7 @@ export default function AllUsersPage() {
   const canCreate = perms.has(PERMISSIONS.ADMIN.USERS);
   const canDelete = perms.has(PERMISSIONS.ADMIN.USERS); // Assuming create implies manage or separate perms
   const canEdit = perms.has(PERMISSIONS.ADMIN.USERS);
+  const isSuperAdmin = user?.roles?.includes("SUPER_ADMIN") || user?.roles?.some(r => r.name === "SUPER_ADMIN" || (r.roleId && r.roleId.name === "SUPER_ADMIN"));
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,43 +25,69 @@ export default function AllUsersPage() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [sortKey, setSortKey] = useState("createdAt");
   const [sortDir, setSortDir] = useState("desc");
+  const [organizations, setOrganizations] = useState([]);
+  const [selectedTenantId, setSelectedTenantId] = useState("");
 
   const pageSize = 10;
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const res = await getAllUsers({
-        page,
-        limit: pageSize,
-        search,
-        sortKey,
-        sortDir,
-      });
-      setUsers(res.data);
-      setTotalPages(res.meta.totalPages);
-      setTotalUsers(res.meta.total);
-    } catch (error) {
-      toast.error("İstifadəçiləri gətirərkən xəta baş verdi");
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   useEffect(() => {
-    // Debounce search
-    const timer = setTimeout(() => {
-        fetchUsers();
+    const timer = setTimeout(async () => {
+      try {
+        setLoading(true);
+        const params = {
+          page,
+          limit: pageSize,
+          search,
+          sortKey,
+          sortDir,
+        };
+        if (selectedTenantId) params.tenantId = selectedTenantId;
+        const res = await getAllUsers(params);
+        setUsers(res.data);
+        setTotalPages(res.meta.totalPages);
+        setTotalUsers(res.meta.total);
+      } catch {
+        toast.error("İstifadəçiləri gətirərkən xəta baş verdi");
+      } finally {
+        setLoading(false);
+      }
     }, 500);
     return () => clearTimeout(timer);
-  }, [page, search, sortKey, sortDir]);
+  }, [page, search, sortKey, sortDir, selectedTenantId]);
+
+  useEffect(() => {
+    if (!isSuperAdmin) return;
+    (async () => {
+      try {
+        const data = await getAllOrganizations();
+        setOrganizations(Array.isArray(data) ? data : []);
+      } catch {
+        void 0;
+      }
+    })();
+  }, [isSuperAdmin]);
 
   const handleDelete = async (id) => {
       if(!window.confirm("Bu istifadəçini silmək istədiyinizə əminsiniz?")) return;
       try {
           await deleteUser(id);
           toast.success("İstifadəçi silindi");
-          fetchUsers();
+          const params = {
+            page,
+            limit: pageSize,
+            search,
+            sortKey,
+            sortDir,
+          };
+          if (selectedTenantId) params.tenantId = selectedTenantId;
+          setLoading(true);
+          const res = await getAllUsers(params);
+          setUsers(res.data);
+          setTotalPages(res.meta.totalPages);
+          setTotalUsers(res.meta.total);
+          setLoading(false);
       } catch (error) {
           toast.error(error.response?.data?.message || "Xəta baş verdi");
       }
@@ -75,7 +103,7 @@ export default function AllUsersPage() {
       }
   };
 
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  
 
   return (
     <div className="space-y-6">
@@ -85,6 +113,23 @@ export default function AllUsersPage() {
           <p className="text-sm text-[#124459]/70">Sistemdə qeydiyyatda olan istifadəçilərin siyahısı</p>
         </div>
         <div className="flex items-center gap-3">
+          {isSuperAdmin && (
+            <div className="relative">
+              <select
+                className="h-10 rounded-md border border-[#124459]/20 bg-white px-3 text-sm outline-none focus:border-[#124459]/40 min-w-[200px]"
+                value={selectedTenantId}
+                onChange={(e) => {
+                    setSelectedTenantId(e.target.value);
+                    setPage(1);
+                }}
+              >
+                <option value="">Bütün Qurumlar</option>
+                {organizations.map(org => (
+                  <option key={org._id} value={org._id}>{org.organization_name}</option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#124459]/50" />
             <input 

@@ -4,13 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { createUser, getAllRoles } from "../api/userApi";
-import { getAllEmployees } from "@/modules/hr/api/employeeApi";
+import { createUser } from "../api/userApi";
+import { getAllEmployees, getAllOrganizations, getAllRoles } from "@/modules/hr/api/employeeApi";
 import { ArrowLeft, Save, Loader2, Search, X } from "lucide-react";
 
 const AddNewUserPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [organizations, setOrganizations] = useState([]);
+  const [selectedTenantId, setSelectedTenantId] = useState("");
   const [roles, setRoles] = useState([]);
   const [employeesList, setEmployeesList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,8 +31,21 @@ const AddNewUserPage = () => {
   });
 
   useEffect(() => {
-    fetchRoles();
-
+    (async () => {
+      try {
+        const data = await getAllOrganizations();
+        setOrganizations(data || []);
+      } catch { void 0; }
+      try {
+        const data = await getAllRoles(selectedTenantId);
+        setRoles(data || []);
+        if (data && data.length > 0) {
+          setFormData(prev => ({ ...prev, roleId: data[0]._id }));
+        }
+      } catch {
+        toast.error("Rollar yüklənərkən xəta baş verdi");
+      }
+    })();
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
@@ -41,37 +56,40 @@ const AddNewUserPage = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [selectedTenantId]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchEmployees(searchTerm);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  const fetchEmployees = async (search) => {
-    try {
-      const result = await getAllEmployees({ search, limit: 10 });
-      setEmployeesList(result.data || []);
-    } catch (error) {
-      console.error("Error fetching employees:", error);
-    }
-  };
-
-  const fetchRoles = async () => {
-    try {
-      const data = await getAllRoles();
-      setRoles(data || []);
-      // Pre-select first role if available
-      if (data && data.length > 0) {
-        setFormData(prev => ({ ...prev, roleId: data[0]._id }));
+    const timer = setTimeout(async () => {
+      try {
+        const params = { search: searchTerm, limit: 10 };
+        if (selectedTenantId) params.tenantId = selectedTenantId;
+        const result = await getAllEmployees(params);
+        setEmployeesList(result.data || []);
+      } catch {
+        // ignore
       }
-    } catch (error) {
-      toast.error("Rollar yüklənərkən xəta baş verdi");
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm, selectedTenantId]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getAllRoles(selectedTenantId);
+        setRoles(data || []);
+        if (data && data.length > 0) {
+          setFormData(prev => ({ ...prev, roleId: data[0]._id }));
+        }
+      } catch {
+        toast.error("Rollar yüklənərkən xəta baş verdi");
+      }
+    })();
+    if (!searchTerm) {
+      setEmployeesList([]);
     }
-  };
+  }, [selectedTenantId, searchTerm]);
+
+  // removed helper functions to satisfy lint
 
   const handleEmployeeSelect = (emp) => {
     const fullName = `${emp.personalData.firstName} ${emp.personalData.lastName}`;
@@ -152,67 +170,89 @@ const AddNewUserPage = () => {
 
       <div className="rounded-3xl bg-white p-8 shadow-[0_20px_50px_rgba(18,69,89,0.05)] ring-1 ring-[#124459]/10">
         <div className="mb-6 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
-          <div className="space-y-2" ref={dropdownRef}>
-            <Label>Mövcud işçilərdən seç (Avtomatik doldurma)</Label>
-            <div className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="tenant">Qurum seçin</Label>
+              <select
+                id="tenant"
+                value={selectedTenantId}
+                onChange={(e) => {
+                  setSelectedTenantId(e.target.value);
+                  setIsDropdownOpen(false);
+                }}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <option value="">Cari qurum</option>
+                {organizations.map(org => (
+                  <option key={org._id} value={org._id}>{org.organization_name}</option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">
+                Super admin üçün digər qurumları seçmək mümkündür.
+              </p>
+            </div>
+            <div className="space-y-2" ref={dropdownRef}>
+              <Label>Mövcud işçilərdən seç (Avtomatik doldurma)</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-                <Input
-                  placeholder="Ad, Soyad və ya Vəzifə üzrə axtarış..."
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setIsDropdownOpen(true);
-                  }}
-                  onFocus={() => setIsDropdownOpen(true)}
-                  className="pl-9"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => {
-                      setSearchTerm("");
-                      setFormData(prev => ({
-                        ...prev,
-                        firstName: "",
-                        lastName: "",
-                        fatherName: "",
-                        email: "",
-                        username: ""
-                      }));
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+                  <Input
+                    placeholder="Ad, Soyad və ya Vəzifə üzrə axtarış..."
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setIsDropdownOpen(true);
                     }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-
-              {isDropdownOpen && (
-                <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
-                  {employeesList.length > 0 ? (
-                    employeesList.map((emp) => (
-                      <div
-                        key={emp._id}
-                        className="cursor-pointer px-4 py-2 hover:bg-slate-50 text-sm"
-                        onClick={() => handleEmployeeSelect(emp)}
-                      >
-                        <div className="font-medium text-[#124459]">
-                          {emp.personalData.firstName} {emp.personalData.lastName}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {emp.jobData.primaryAssignment.role}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="px-4 py-2 text-sm text-gray-500">Nəticə tapılmadı</div>
+                    onFocus={() => setIsDropdownOpen(true)}
+                    className="pl-9"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => {
+                        setSearchTerm("");
+                        setFormData(prev => ({
+                          ...prev,
+                          firstName: "",
+                          lastName: "",
+                          fatherName: "",
+                          email: "",
+                          username: ""
+                        }));
+                      }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   )}
                 </div>
-              )}
+
+                {isDropdownOpen && (
+                  <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                    {employeesList.length > 0 ? (
+                      employeesList.map((emp) => (
+                        <div
+                          key={emp._id}
+                          className="cursor-pointer px-4 py-2 hover:bg-slate-50 text-sm"
+                          onClick={() => handleEmployeeSelect(emp)}
+                        >
+                          <div className="font-medium text-[#124459]">
+                            {emp.personalData.firstName} {emp.personalData.lastName}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {emp.jobData.primaryAssignment.role}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-4 py-2 text-sm text-gray-500">Nəticə tapılmadı</div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Qeyd: İşçi seçimi formanı avtomatik dolduracaq.
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Qeyd: İşçi seçimi formanı avtomatik dolduracaq.
-            </p>
           </div>
         </div>
 

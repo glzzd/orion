@@ -3,7 +3,17 @@ const UserService = require("../services/User.service");
 // Get All Users
 const getAllUsers = async (req, res, next) => {
   try {
-    const result = await UserService.getAllUsers(req.user.tenantId, req.query);
+    const { tenantId: queryTenantId } = req.query;
+    let tenantId = req.user.tenantId;
+    const isSuperAdmin = req.user.roles?.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    if (isSuperAdmin) {
+      if (queryTenantId) {
+        tenantId = queryTenantId;
+      } else {
+        tenantId = null;
+      }
+    }
+    const result = await UserService.getAllUsers(tenantId, req.query);
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -13,7 +23,12 @@ const getAllUsers = async (req, res, next) => {
 // Create User
 const createUser = async (req, res, next) => {
   try {
-    const user = await UserService.createUser(req.user.tenantId, req.body, req.user.id);
+    let tenantId = req.user.tenantId;
+    const isSuperAdmin = req.user.roles?.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    if (isSuperAdmin && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
+    const user = await UserService.createUser(tenantId, req.body, req.user.id);
     res.status(201).json({ message: "İstifadəçi uğurla yaradıldı", user });
   } catch (error) {
     next(error);

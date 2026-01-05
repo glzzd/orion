@@ -22,8 +22,12 @@ const getAllPermissions = async (req, res, next) => {
 // Roles
 const createRole = async (req, res, next) => {
   try {
-    // Assuming tenantId comes from authenticated user or body
-    const roleData = { ...req.body, tenantId: req.user?.tenantId || req.body.tenantId };
+    const isSuperAdmin = req.user?.roles?.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    let tenantId = req.user?.tenantId;
+    if (isSuperAdmin) {
+      tenantId = req.body.tenantId || tenantId;
+    }
+    const roleData = { ...req.body, tenantId, audit: { createdBy: req.user?._id } };
     const role = await RBACService.createRole(roleData);
     res.status(201).json(role);
   } catch (error) {

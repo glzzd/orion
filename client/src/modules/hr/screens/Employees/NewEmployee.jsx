@@ -26,6 +26,107 @@ import {
 } from "lucide-react";
 import documentTypes from "@/consts/documentTypes.json";
 
+const SectionTitle = ({ icon, title, description }) => {
+  const IconComp = icon;
+  return (
+  <div className="flex items-start gap-4 mb-6 pb-4 border-b border-[#E5E7EB]">
+    <div className="p-3 rounded-xl bg-[#F3F4F6] text-[#124459] ring-1 ring-[#E5E7EB]">
+      <IconComp size={24} />
+    </div>
+    <div>
+      <h3 className="text-lg font-semibold text-[#124459]">{title}</h3>
+      <p className="text-sm text-[#6B7280]">{description}</p>
+    </div>
+  </div>
+  );
+};
+
+const InputGroup = ({ label, name, type = "text", placeholder, icon, value, onChange, options, required = false }) => {
+  const IconComp = icon;
+  return (
+  <div className="space-y-2">
+    <label className="text-sm font-medium text-[#374151] ml-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <div className="relative group">
+      {IconComp && (
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] group-focus-within:text-[#124459] transition-colors">
+          <IconComp size={18} />
+        </div>
+      )}
+      {options ? (
+        <select
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`w-full bg-white border border-[#D1D5DB] rounded-xl py-2.5 ${IconComp ? "pl-10" : "pl-4"} pr-4 text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#124459]/10 focus:border-[#124459] transition-all appearance-none cursor-pointer shadow-sm`}
+        >
+          <option value="" disabled>Seçin...</option>
+          {options.map((opt) => (
+            <option key={typeof opt === 'object' ? opt.id : opt} value={typeof opt === 'object' ? opt.id : opt} className="text-[#111827]">
+              {typeof opt === 'object' ? opt.label : opt}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`w-full bg-white border border-[#D1D5DB] rounded-xl py-2.5 ${IconComp ? "pl-10" : "pl-4"} pr-4 text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#124459]/10 focus:border-[#124459] transition-all shadow-sm`}
+        />
+      )}
+    </div>
+  </div>
+  );
+};
+
+const FileUpload = ({ label, description, onChange, icon = FileText }) => {
+  const IconComp = icon;
+  return (
+  <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 flex flex-col items-center text-center shadow-sm h-full justify-center">
+    <div className="w-16 h-16 rounded-full bg-[#F3F4F6] border-2 border-dashed border-[#D1D5DB] flex items-center justify-center mb-4 group cursor-pointer hover:border-[#124459]/50 transition-all relative overflow-hidden">
+      <IconComp size={24} className="text-[#9CA3AF] group-hover:text-[#124459] transition-colors" />
+      <input 
+        type="file" 
+        className="absolute inset-0 opacity-0 cursor-pointer" 
+        onChange={(e) => onChange(e.target.files[0])}
+      />
+    </div>
+    <h3 className="text-[#124459] font-medium mb-1">{label}</h3>
+    <p className="text-xs text-[#6B7280]">{description}</p>
+  </div>
+  );
+};
+
+const StepIndicator = ({ currentStep }) => (
+  <div className="flex items-center justify-center mb-8">
+    {[
+      { step: 1, title: "Şəxsi Məlumatlar", icon: User },
+      { step: 2, title: "Təhsil", icon: GraduationCap },
+      { step: 3, title: "İş Təcrübəsi", icon: History }
+    ].map((item, index) => (
+      <div key={item.step} className="flex items-center">
+        <div className={`flex flex-col items-center gap-2 ${currentStep >= item.step ? "text-[#124459]" : "text-[#9CA3AF]"}`}>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
+            currentStep >= item.step 
+              ? "bg-[#124459] border-[#124459] text-white" 
+              : "bg-white border-[#E5E7EB] text-[#9CA3AF]"
+          }`}>
+            <item.icon size={18} />
+          </div>
+          <span className="text-xs font-medium">{item.title}</span>
+        </div>
+        {index < 2 && (
+          <div className={`w-20 h-0.5 mx-4 mb-6 ${currentStep > item.step ? "bg-[#124459]" : "bg-[#E5E7EB]"}`} />
+        )}
+      </div>
+    ))}
+  </div>
+);
+
 const NewEmployee = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -153,99 +254,7 @@ const NewEmployee = () => {
     window.scrollTo(0, 0);
   };
 
-  // Components
-  const SectionTitle = ({ icon: Icon, title, description }) => (
-    <div className="flex items-start gap-4 mb-6 pb-4 border-b border-[#E5E7EB]">
-      <div className="p-3 rounded-xl bg-[#F3F4F6] text-[#124459] ring-1 ring-[#E5E7EB]">
-        <Icon size={24} />
-      </div>
-      <div>
-        <h3 className="text-lg font-semibold text-[#124459]">{title}</h3>
-        <p className="text-sm text-[#6B7280]">{description}</p>
-      </div>
-    </div>
-  );
-
-  const InputGroup = ({ label, name, type = "text", placeholder, icon: Icon, value, onChange, options, required = false }) => (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-[#374151] ml-1">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="relative group">
-        {Icon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] group-focus-within:text-[#124459] transition-colors">
-            <Icon size={18} />
-          </div>
-        )}
-        {options ? (
-          <select
-            name={name}
-            value={value}
-            onChange={onChange}
-            className={`w-full bg-white border border-[#D1D5DB] rounded-xl py-2.5 ${Icon ? "pl-10" : "pl-4"} pr-4 text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#124459]/10 focus:border-[#124459] transition-all appearance-none cursor-pointer shadow-sm`}
-          >
-            <option value="" disabled>Seçin...</option>
-            {options.map((opt) => (
-               // Handle both string array and object array for options
-              <option key={typeof opt === 'object' ? opt.id : opt} value={typeof opt === 'object' ? opt.id : opt} className="text-[#111827]">
-                {typeof opt === 'object' ? opt.label : opt}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <input
-            type={type}
-            name={name}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            className={`w-full bg-white border border-[#D1D5DB] rounded-xl py-2.5 ${Icon ? "pl-10" : "pl-4"} pr-4 text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#124459]/10 focus:border-[#124459] transition-all shadow-sm`}
-          />
-        )}
-      </div>
-    </div>
-  );
-
-  const FileUpload = ({ label, description, onChange, icon: Icon = FileText }) => (
-    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 flex flex-col items-center text-center shadow-sm h-full justify-center">
-      <div className="w-16 h-16 rounded-full bg-[#F3F4F6] border-2 border-dashed border-[#D1D5DB] flex items-center justify-center mb-4 group cursor-pointer hover:border-[#124459]/50 transition-all relative overflow-hidden">
-        <Icon size={24} className="text-[#9CA3AF] group-hover:text-[#124459] transition-colors" />
-        <input 
-          type="file" 
-          className="absolute inset-0 opacity-0 cursor-pointer" 
-          onChange={(e) => onChange(e.target.files[0])}
-        />
-      </div>
-      <h3 className="text-[#124459] font-medium mb-1">{label}</h3>
-      <p className="text-xs text-[#6B7280]">{description}</p>
-    </div>
-  );
-
-  const StepIndicator = () => (
-    <div className="flex items-center justify-center mb-8">
-      {[
-        { step: 1, title: "Şəxsi Məlumatlar", icon: User },
-        { step: 2, title: "Təhsil", icon: GraduationCap },
-        { step: 3, title: "İş Təcrübəsi", icon: History }
-      ].map((item, index) => (
-        <div key={item.step} className="flex items-center">
-          <div className={`flex flex-col items-center gap-2 ${currentStep >= item.step ? "text-[#124459]" : "text-[#9CA3AF]"}`}>
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
-              currentStep >= item.step 
-                ? "bg-[#124459] border-[#124459] text-white" 
-                : "bg-white border-[#E5E7EB] text-[#9CA3AF]"
-            }`}>
-              <item.icon size={18} />
-            </div>
-            <span className="text-xs font-medium">{item.title}</span>
-          </div>
-          {index < 2 && (
-            <div className={`w-20 h-0.5 mx-4 mb-6 ${currentStep > item.step ? "bg-[#124459]" : "bg-[#E5E7EB]"}`} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
+  // Components moved outside to satisfy lint rules
 
   return (
     <div className="min-h-screen pb-20 pt-6 px-6 relative overflow-hidden">
@@ -266,7 +275,7 @@ const NewEmployee = () => {
         </div>
       </div>
 
-      <StepIndicator />
+      <StepIndicator currentStep={currentStep} />
 
       {/* Main Form */}
       <div className="max-w-4xl mx-auto relative z-10 pb-24">
@@ -438,12 +447,12 @@ const NewEmployee = () => {
                   <FileUpload 
                     label="Diplom" 
                     description="PDF və ya JPG (max 5MB)" 
-                    onChange={(f) => {}} 
+                    onChange={() => {}} 
                   />
                   <FileUpload 
                     label="Sertifikatlar" 
                     description="Zip və ya PDF formatında" 
-                    onChange={(f) => {}} 
+                    onChange={() => {}} 
                   />
                 </div>
               </div>

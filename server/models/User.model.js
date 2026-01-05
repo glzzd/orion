@@ -35,7 +35,9 @@ const UserSchema = new mongoose.Schema(
       }
     ],
     audit: {
+      createdAt: { type: Date, default: Date.now },
       createdBy: { type: mongoose.Schema.Types.ObjectId },
+      updatedAt: { type: Date },
       updatedBy: { type: mongoose.Schema.Types.ObjectId }
     }
   },

@@ -61,6 +61,7 @@ const seed = async () => {
       { slug: "admin:roles", name: "Rollar və İcazələri İdarəetmə", group: "Admin" },
       { slug: "admin:logs", name: "Sistem Loglarını Görüntüləmə", group: "Admin" },
       { slug: "admin:settings", name: "Sistem Ayarlarını İdarəetmə", group: "Admin" },
+      { slug: "admin:organizations", name: "Qurum və Təşkilat Parametrlərini İdarəetmə", group: "Admin" },
     ];
 
     console.log("Seeding permissions...");

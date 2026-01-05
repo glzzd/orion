@@ -7,5 +7,8 @@ const authMiddleware = require("../middlewares/authMiddleware");
 router.use(authMiddleware);
 
 router.get("/", OrganizationController.getOrganizations);
+router.post("/", OrganizationController.createOrganization);
+router.get("/:id", OrganizationController.getOrganizationById);
+router.put("/:id", OrganizationController.updateOrganization);
 
 module.exports = router;

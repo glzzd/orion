@@ -340,9 +340,9 @@ export const MENUITEMS = [
             rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
           },
           {
-            id: "admin-organization-settings",
-            title: "Qurum və Təşkilat parametrləri",
-            path: "/admin/organizations/settings",
+            id: "admin-organization-structures",
+            title: "Qurum və Təşkilatların strukturları",
+            path: "/admin/organizations/structures",
             icon: "settings",
             rbac: { any: [PERMISSIONS.ADMIN.ORGANIZATIONS] },
           }

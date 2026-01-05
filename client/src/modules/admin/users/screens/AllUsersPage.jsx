@@ -30,6 +30,13 @@ export default function AllUsersPage() {
 
   const pageSize = 10;
 
+  const organizationsMap = React.useMemo(() => {
+    const m = new Map();
+    for (const o of organizations) {
+      m.set(o._id, o.organization_name);
+    }
+    return m;
+  }, [organizations]);
   
 
   useEffect(() => {
@@ -157,12 +164,16 @@ export default function AllUsersPage() {
         <Table className="text-[13px]">
           <TableHeader>
             <TableRow className="sticky top-0 z-10 bg-gradient-to-b from-[#F7FAFF] to-[#EFF6FB] backdrop-blur-md shadow-sm">
-              <TableHead onClick={() => handleSort("username")} className="cursor-pointer select-none text-[#124459] font-semibold px-4 py-3">
-                <span className="inline-flex items-center gap-1">İstifadəçi adı <ArrowUpDown className={`size-3 ${sortKey === "username" ? "opacity-100" : "opacity-40"}`} /></span>
-              </TableHead>
               <TableHead onClick={() => handleSort("personalData.firstName")} className="cursor-pointer select-none text-[#124459] font-semibold px-4 py-3">
                 <span className="inline-flex items-center gap-1">Ad Soyad <ArrowUpDown className={`size-3 ${sortKey === "personalData.firstName" ? "opacity-100" : "opacity-40"}`} /></span>
               </TableHead>
+              <TableHead onClick={() => handleSort("username")} className="cursor-pointer select-none text-[#124459] font-semibold px-4 py-3">
+                <span className="inline-flex items-center gap-1">İstifadəçi adı <ArrowUpDown className={`size-3 ${sortKey === "username" ? "opacity-100" : "opacity-40"}`} /></span>
+              </TableHead>
+              <TableHead className="text-[#124459] font-semibold px-4 py-3">
+                Qurum
+              </TableHead>
+              
               <TableHead className="text-[#124459] font-semibold px-4 py-3">
                 Email
               </TableHead>
@@ -178,17 +189,16 @@ export default function AllUsersPage() {
           <TableBody>
             {loading ? (
                 <TableRow>
-                    <TableCell colSpan={6} className="text-center py-10 text-gray-500">Yüklənir...</TableCell>
+                    <TableCell colSpan={7} className="text-center py-10 text-gray-500">Yüklənir...</TableCell>
                 </TableRow>
             ) : users.length === 0 ? (
                 <TableRow>
-                    <TableCell colSpan={6} className="text-center py-10 text-gray-500">İstifadəçi tapılmadı</TableCell>
+                    <TableCell colSpan={7} className="text-center py-10 text-gray-500">İstifadəçi tapılmadı</TableCell>
                 </TableRow>
             ) : (
                 users.map((u) => (
                 <TableRow key={u._id} className="group odd:bg-white even:bg-[#FBFDFF] hover:bg-[#F7FAFF] border-b border-[#124459]/10 transition-colors">
-                    <TableCell className="px-4 py-3 font-medium text-[#124459]">{u.username}</TableCell>
-                    <TableCell className="px-4 py-3 text-[#124459]">
+                  <TableCell className="px-4 py-3 text-[#124459]">
                         <div className="flex items-center gap-3">
                             <div className="size-8 rounded-full bg-gradient-to-br from-[#124459]/20 to-[#124459]/10 text-[#124459] grid place-items-center font-medium ring-1 ring-[#124459]/30">
                             {u.personalData?.firstName?.[0]}{u.personalData?.lastName?.[0]}
@@ -197,11 +207,16 @@ export default function AllUsersPage() {
                             <span className="font-medium text-[13px] text-[#124459]">{u.personalData?.firstName} {u.personalData?.lastName}</span>
                             </div>
                         </div>
-                    </TableCell>
-                    <TableCell className="px-4 py-3 text-[#124459]">{u.email}</TableCell>
-                    <TableCell className="px-4 py-3 text-center">
-                        <div className="flex flex-wrap gap-1 justify-center">
-                            {u.roles?.map((r, idx) => (
+                  </TableCell>
+                  <TableCell className="px-4 py-3 font-medium text-[#124459]">{u.username}</TableCell>
+                  <TableCell className="px-4 py-3 text-[#124459]">
+                    {isSuperAdmin ? (organizationsMap.get(u.tenantId) || "-") : "Cari qurum"}
+                  </TableCell>
+                  
+                  <TableCell className="px-4 py-3 text-[#124459]">{u.email}</TableCell>
+                  <TableCell className="px-4 py-3 text-center">
+                      <div className="flex flex-wrap gap-1 justify-center">
+                          {u.roles?.map((r, idx) => (
                                 <span key={idx} className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                                     <Shield className="size-3" />
                                     {r.roleId?.name || "Naməlum"}

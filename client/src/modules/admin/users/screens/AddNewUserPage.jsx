@@ -130,6 +130,7 @@ const AddNewUserPage = () => {
       }
 
       const payload = {
+        ...(selectedTenantId ? { tenantId: selectedTenantId } : {}),
         username: formData.username,
         email: formData.email,
         password: formData.password,

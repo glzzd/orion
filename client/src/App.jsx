@@ -24,10 +24,12 @@ import PermissionGuard from "@/components/PermissionGuard";
 import { Toaster } from "@/components/ui/sonner";
 import AllRoles from "@/modules/admin/roles/screens/AllRoles.jsx";
 import AddNewRole from "@/modules/admin/roles/screens/AddNewRole.jsx";
+import DynamicTitle from "./components/DynamicTitle";
 
 function App() {
   return (
     <BrowserRouter>
+      <DynamicTitle />
       <AuthProvider>
         <Toaster />
         <Routes>

@@ -23,7 +23,7 @@ const OrganizationUnitSchema = new mongoose.Schema(
       required: true,
       enum: [
         "HEAD_OFFICE",
-        "DIRECTORATE",
+        "OFFICE",
         "DEPARTMENT",
         "DIVISION"
       ]

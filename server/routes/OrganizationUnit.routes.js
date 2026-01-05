@@ -8,5 +8,7 @@ router.use(authMiddleware);
 
 router.get("/", OrganizationUnitController.getOrgUnits);
 router.get("/:id", OrganizationUnitController.getOrgUnitById);
+router.post("/", OrganizationUnitController.createOrgUnit);
+router.put("/:id", OrganizationUnitController.updateOrgUnit);
 
 module.exports = router;

@@ -8,7 +8,6 @@ import { PERMISSIONS } from "@/consts/permissions";
 import { getAllOrganizations } from "../api/organizationApi";
 import { toast } from "sonner";
 import { EyeIcon } from "lucide-react";
-import { SignatureIcon } from "lucide-react";
 import { Group } from "lucide-react";
 import { API_BASE_URL } from "@/consts/apiEndpoints";
 
@@ -152,7 +151,7 @@ const AllOrganizationsPage = () => {
                             <EyeIcon className="text-green-700 hover:text-white/10"/> Bax
                           </Button>
                         </NavLink>
-                        <NavLink to={`/admin/organizations/${o._id}`}>
+                        <NavLink to={`/admin/organizations/${o._id}/structure`}>
                           <Button variant="ghost" size="sm" className="text-[#124459] hover:bg-orange-700/10">
                             <Group className="text-orange-700 hover:text-white/10"/> Struktur
                           </Button>

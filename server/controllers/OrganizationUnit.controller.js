@@ -37,7 +37,39 @@ const getOrgUnitById = async (req, res) => {
   }
 };
 
+const createOrgUnit = async (req, res) => {
+  try {
+    let tenantId = req.user.tenantId;
+    const isSuperAdmin = req.user.roles.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    if (isSuperAdmin && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
+    const unit = await OrganizationUnitService.createOrgUnit(tenantId, req.body, req.user._id);
+    res.status(201).json(unit);
+  } catch (error) {
+    const status = error.statusCode || 500;
+    res.status(status).json({ message: error.message || "Server error" });
+  }
+};
+
+const updateOrgUnit = async (req, res) => {
+  try {
+    let tenantId = req.user.tenantId;
+    const isSuperAdmin = req.user.roles.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
+    if (isSuperAdmin && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
+    const updated = await OrganizationUnitService.updateOrgUnit(tenantId, req.params.id, req.body, req.user._id);
+    res.status(200).json(updated);
+  } catch (error) {
+    const status = error.statusCode || 500;
+    res.status(status).json({ message: error.message || "Server error" });
+  }
+};
+
 module.exports = {
   getOrgUnits,
   getOrgUnitById,
+  createOrgUnit,
+  updateOrgUnit
 };

@@ -27,7 +27,10 @@ const updateRolePermissions = async (roleId, permissionIds) => {
 };
 
 const getAllRoles = async (tenantId) => {
-  return await Role.find({ tenantId }).populate("permissions");
+  if (tenantId) {
+    return await Role.find({ tenantId }).populate("permissions");
+  }
+  return await Role.find({}).populate("permissions");
 };
 
 // User Role Assignment

@@ -42,7 +42,7 @@ export default function OrganizationChart() {
 
         const chartData = Object.keys(orgCounts).map((key) => ({
           organization: key,
-          count: orgCounts[key],
+          əməkdaş: orgCounts[key],
         }));
 
         // Sort by count desc for better visualization in radar (usually)
@@ -86,7 +86,7 @@ export default function OrganizationChart() {
         ) : (
           <ResponsiveRadar
             data={data}
-            keys={[ 'count' ]}
+            keys={[ 'əməkdaş' ]}
             indexBy="organization"
             valueFormat=">-.0f"
             margin={{ top: 70, right: 80, bottom: 40, left: 80 }}

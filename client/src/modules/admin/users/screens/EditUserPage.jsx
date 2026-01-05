@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,11 +29,7 @@ const EditUserPage = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    fetchInitialData();
-  }, [id]);
-
-  const fetchInitialData = async () => {
+  const fetchInitialData = useCallback(async () => {
     try {
       setInitialLoading(true);
       const [rolesData, userData] = await Promise.all([
@@ -63,7 +59,11 @@ const EditUserPage = () => {
     } finally {
       setInitialLoading(false);
     }
-  };
+  }, [id, tenantParam, navigate]);
+
+  useEffect(() => {
+    fetchInitialData();
+  }, [fetchInitialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

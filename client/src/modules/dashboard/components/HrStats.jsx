@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getAllEmployees } from "@/modules/hr/api/employeeApi";
+import { formatDate } from "@/lib/utils";
 import { Cake, Loader2, Calendar } from "lucide-react";
 
 export default function HrStats() {
@@ -13,24 +14,42 @@ export default function HrStats() {
         const response = await getAllEmployees({ limit: 1000 });
         const employees = response.data || [];
         
-        const currentMonth = new Date().getMonth();
-        const upcoming = employees.filter(emp => {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const todayDay = now.getDate();
+        
+        const inMonth = employees.filter(emp => {
           const dobString = emp.personalData?.dateOfBirth || emp.profile?.birthDate;
           if (!dobString) return false;
-          
           const date = new Date(dobString);
           if (isNaN(date.getTime())) return false;
-          
           return date.getMonth() === currentMonth;
         });
 
-        upcoming.sort((a, b) => {
-           const dateA = new Date(a.personalData?.dateOfBirth || a.profile?.birthDate).getDate();
-           const dateB = new Date(b.personalData?.dateOfBirth || b.profile?.birthDate).getDate();
-           return dateA - dateB;
-        });
+        const today = [];
+        const upcoming = [];
+        const past = [];
 
-        setBirthdays(upcoming);
+        for (const emp of inMonth) {
+          const dobString = emp.personalData?.dateOfBirth || emp.profile?.birthDate;
+          const d = new Date(dobString);
+          const day = d.getDate();
+          if (day === todayDay) today.push(emp);
+          else if (day > todayDay) upcoming.push(emp);
+          else past.push(emp);
+        }
+
+        const byDayAsc = (a, b) => {
+          const da = new Date(a.personalData?.dateOfBirth || a.profile?.birthDate).getDate();
+          const db = new Date(b.personalData?.dateOfBirth || b.profile?.birthDate).getDate();
+          return da - db;
+        };
+
+        today.sort(byDayAsc);
+        upcoming.sort(byDayAsc);
+        past.sort(byDayAsc);
+
+        setBirthdays([...today, ...upcoming, ...past]);
       } catch (error) {
         console.error("Failed to fetch birthdays", error);
       } finally {
@@ -78,13 +97,14 @@ export default function HrStats() {
               const dobString = emp.personalData?.dateOfBirth || emp.profile?.birthDate;
               if (!dobString) return null;
 
-              const date = new Date(dobString);
-              const day = date.getDate().toString().padStart(2, '0');
-              const month = (date.getMonth() + 1).toString().padStart(2, '0');
-              const year = date.getFullYear();
-              const formattedDate = `${day}.${month}.${year}`;
+              const formattedDate = formatDate(dobString);
+              const year = new Date(dobString).getFullYear();
               const currentYear = new Date().getFullYear();
               const turningAge = currentYear - year;
+              const d = new Date(dobString);
+              const day = d.getDate();
+              const todayDay = new Date().getDate();
+              const dotColorClass = day === todayDay ? "bg-pink-400" : day > todayDay ? "bg-emerald-400" : "";
               
               const p = emp.personalData || emp.profile || {};
               const fullName = p.fullName || `${p.lastName || ''} ${p.firstName || ''} ${p.fatherName || ''}`.trim();
@@ -115,9 +135,9 @@ export default function HrStats() {
                       </div>
                    </div>
                    <div className="flex flex-col items-end">
-                     <div className="h-2 w-2 rounded-full bg-pink-400"></div>
+                     {dotColorClass && <div className={`h-2 w-2 rounded-full ${dotColorClass}`}></div>}
                    </div>
-                </div>
+                 </div>
               );
             })}
           </div>

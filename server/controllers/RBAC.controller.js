@@ -48,17 +48,13 @@ const updateRolePermissions = async (req, res, next) => {
 
 const getAllRoles = async (req, res, next) => {
   try {
-    let tenantId = req.user?.tenantId;
-    
-    // Check if user is SUPER_ADMIN
     const isSuperAdmin = req.user.roles.some(r => r.roleId && r.roleId.name === "SUPER_ADMIN");
-    
-    if (isSuperAdmin && req.query.tenantId) {
-        tenantId = req.query.tenantId;
-    } else if (!tenantId) {
-        tenantId = req.query.tenantId;
+    let tenantId;
+    if (isSuperAdmin) {
+      tenantId = req.query.tenantId || undefined;
+    } else {
+      tenantId = req.user?.tenantId || req.query.tenantId;
     }
-
     const roles = await RBACService.getAllRoles(tenantId);
     res.status(200).json(roles);
   } catch (error) {

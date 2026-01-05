@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table.jsx";
 import { Button } from "@/components/ui/button.jsx";
@@ -90,12 +90,7 @@ export default function Employees() {
     fetchOptions();
   }, [selectedTenantId]);
 
-  // Fetch Employees
-  useEffect(() => {
-    fetchEmployees();
-  }, [page, limit, debouncedSearch, sortKey, sortDir, selectedTenantId, filterRoles, filterOrgUnits, filterStatuses, filterGenders]);
-
-  const fetchEmployees = async () => {
+  const fetchEmployees = useCallback(async () => {
     setLoading(true);
     try {
       const params = {
@@ -120,7 +115,12 @@ export default function Employees() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, limit, debouncedSearch, sortKey, sortDir, selectedTenantId, filterRoles, filterOrgUnits, filterStatuses, filterGenders]);
+
+  // Fetch Employees
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
 
   const handleSort = (key) => {
     if (sortKey === key) {

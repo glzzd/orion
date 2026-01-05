@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { PERMISSIONS } from "@/consts/permissions";
+import { formatDate } from "@/lib/utils";
 import AdminStats from "../components/AdminStats";
 import HrStats from "../components/HrStats";
 import DepartmentChart from "../components/DepartmentChart";
@@ -21,11 +22,12 @@ export default function Dashboard() {
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">Məlumat lövhəsi</h2>
         
-          <p className="text-muted-foreground mt-1">Xoş gəlmisiniz, <span className="font-bold">{user?.lastName} {user?.firstName}</span>!</p>
+          <p className="text-muted-foreground mt-1">Xoş gəlmişsiniz, <span className="font-bold">{user?.lastName} {user?.firstName}</span>!</p>
+          {/* <p className="text-muted-foreground mt-1">Bu bölmədə sistem də olan bütün məlumatlar haqqında qısa statistikalar görə bilərsiniz.</p> */}
         </div>
         <div className="hidden md:flex items-center gap-2">
            <span className="text-sm text-muted-foreground bg-white px-3 py-1 rounded-full border shadow-sm">
-              {new Date().toLocaleDateString('az-AZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              {formatDate(new Date())}
            </span>
         </div>
       </div>

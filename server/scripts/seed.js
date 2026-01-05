@@ -62,6 +62,18 @@ const seed = async () => {
       { slug: "admin:logs", name: "Sistem Loglarını Görüntüləmə", group: "Admin" },
       { slug: "admin:settings", name: "Sistem Ayarlarını İdarəetmə", group: "Admin" },
       { slug: "admin:organizations", name: "Qurum və Təşkilat Parametrlərini İdarəetmə", group: "Admin" },
+
+      // PURCHASE
+      { slug: "purchase:read", name: "Satınalma Görüntüləmə", group: "Purchase" },
+      { slug: "purchase:create", name: "Satınalma Yaratma", group: "Purchase" },
+      { slug: "purchase:update", name: "Satınalma Yeniləmə", group: "Purchase" },
+      { slug: "purchase:delete", name: "Satınalma Silmə", group: "Purchase" },
+      { slug: "purchase:orders", name: "Sifarişləri İdarəetmə", group: "Purchase" },
+      { slug: "purchase:suppliers", name: "Tədarükçüləri İdarəetmə", group: "Purchase" },
+      { slug: "purchase:lots", name: "Lotları İdarəetmə", group: "Purchase" },
+      { slug: "purchase:contracts", name: "Müqavilələri İdarəetmə", group: "Purchase" },
+      { slug: "purchase:products", name: "Məhsulları İdarəetmə", group: "Purchase" },
+      { slug: "purchase:categories", name: "Kateqoriyaları İdarəetmə", group: "Purchase" },
     ];
 
     console.log("Seeding permissions...");

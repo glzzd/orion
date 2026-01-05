@@ -24,4 +24,17 @@ export const PERMISSIONS = {
     ORGANIZATIONS: "admin:organizations",
     AUDIT: "admin:audit",
   },
+
+  PURCHASE: {
+    READ: "purchase:read",
+    CREATE: "purchase:create",
+    UPDATE: "purchase:update",
+    DELETE: "purchase:delete",
+    ORDERS: "purchase:orders",
+    SUPPLIERS: "purchase:suppliers",
+    LOTS: "purchase:lots",
+    CONTRACTS: "purchase:contracts",
+    PRODUCTS: "purchase:products",
+    CATEGORIES: "purchase:categories",
+  },
 };

@@ -23,6 +23,7 @@ app.use("/api/admin/users", allRoutes.adminUserRoutes);
 app.use("/api/hr/employees", allRoutes.employeeRoutes);
 app.use("/api/org-units", allRoutes.orgUnitRoutes);
 app.use("/api/organizations", allRoutes.organizationRoutes);
+app.use("/api/purchase", allRoutes.purchaseRoutes);
 
 app.use(errorHandler);
 

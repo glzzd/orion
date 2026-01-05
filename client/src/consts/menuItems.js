@@ -306,7 +306,161 @@ export const MENUITEMS = [
     },
   ],
   },
-  
+   {
+    id: "purchase",
+    title: "Satınalma",
+    icon: "shopping-cart",
+    rbac: { any: [PERMISSIONS.PURCHASE.READ] },
+    children: [
+      // 1. SİFARİŞLƏR
+      {
+        id: "purchase-orders",
+        title: "Sifarişlər",
+        icon: "clipboard",
+        rbac: { any: [PERMISSIONS.PURCHASE.ORDERS] },
+        children: [
+          {
+            id: "purchase-order-new",
+            title: "Yeni sifariş",
+            path: "/purchase/orders/new",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.PURCHASE.CREATE] },
+          },
+          {
+            id: "purchase-orders-my",
+            title: "Mənim sifarişlərim",
+            path: "/purchase/orders/my",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.PURCHASE.ORDERS] },
+          },
+          {
+            id: "purchase-orders-list",
+            title: "Bütün sifarişlər",
+            path: "/purchase/orders",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.PURCHASE.ORDERS] },
+          },
+        ],
+      },
+
+      // 2. TƏDARÜKÇÜLƏR
+      {
+        id: "purchase-suppliers",
+        title: "Tədarükçülər",
+        icon: "truck",
+        rbac: { any: [PERMISSIONS.PURCHASE.SUPPLIERS] },
+        children: [
+          {
+            id: "purchase-supplier-new",
+            title: "Yeni tədarükçü",
+            path: "/purchase/suppliers/new",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.PURCHASE.CREATE] },
+          },
+          {
+            id: "purchase-suppliers-list",
+            title: "Bütün tədarükçülər",
+            path: "/purchase/suppliers",
+            icon: "users",
+            rbac: { any: [PERMISSIONS.PURCHASE.SUPPLIERS] },
+          },
+        ],
+      },
+
+      // 3. LOTLAR
+      {
+        id: "purchase-lots",
+        title: "Lotlar",
+        icon: "archive",
+        rbac: { any: [PERMISSIONS.PURCHASE.LOTS] },
+        children: [
+          {
+            id: "purchase-lot-new",
+            title: "Yeni lot",
+            path: "/purchase/lots/new",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.PURCHASE.CREATE] },
+          },
+          {
+            id: "purchase-lots-my",
+            title: "Mənim lotlarım",
+            path: "/purchase/lots/my",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.PURCHASE.LOTS] },
+          },
+          {
+            id: "purchase-lots-list",
+            title: "Bütün lotlar",
+            path: "/purchase/lots",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.PURCHASE.LOTS] },
+          },
+        ],
+      },
+
+      // 4. MÜQAVİLƏLƏR
+      {
+        id: "purchase-contracts",
+        title: "Müqavilələr",
+        icon: "document-text",
+        rbac: { any: [PERMISSIONS.PURCHASE.CONTRACTS] },
+        children: [
+          {
+            id: "purchase-contract-new",
+            title: "Yeni müqavilə",
+            path: "/purchase/contracts/new",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.PURCHASE.CREATE] },
+          },
+          {
+            id: "purchase-contracts-list",
+            title: "Bütün müqavilələr",
+            path: "/purchase/contracts",
+            icon: "list",
+            rbac: { any: [PERMISSIONS.PURCHASE.CONTRACTS] },
+          },
+        ],
+      },
+
+      // 5. MƏHSULLAR VƏ KATEQORİYALAR
+      {
+        id: "purchase-products",
+        title: "Məhsullar",
+        icon: "package",
+        rbac: { any: [PERMISSIONS.PURCHASE.PRODUCTS, PERMISSIONS.PURCHASE.CATEGORIES] },
+        children: [
+          {
+            id: "purchase-product-new",
+            title: "Yeni məhsul",
+            path: "/purchase/products/new",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.PURCHASE.CREATE] },
+          },
+          {
+            id: "purchase-category-new",
+            title: "Yeni kateqoriya",
+            path: "/purchase/categories/new",
+            icon: "plus",
+            rbac: { any: [PERMISSIONS.PURCHASE.CREATE] },
+          },
+          {
+            id: "purchase-categories-list",
+            title: "Bütün kateqoriyalar və məhsullar",
+            path: "/purchase/categories",
+            icon: "tag",
+            rbac: { any: [PERMISSIONS.PURCHASE.CATEGORIES] },
+          },
+          {
+            id: "purchase-categories-upload",
+            title: "Kateqoriyalar və məhsullar yüklə",
+            path: "/purchase/categories/upload",
+            icon: "upload",
+            rbac: { any: [PERMISSIONS.PURCHASE.CATEGORIES] },
+          },
+        ],
+      },
+    ],
+  },
   // =====================================================
   // ADMIN PANEL
   // =====================================================

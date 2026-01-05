@@ -4,6 +4,7 @@ const adminUserRoutes = require("./User.routes");
 const employeeRoutes = require("./Employee.routes");
 const orgUnitRoutes = require("./OrganizationUnit.routes");
 const organizationRoutes = require("./Organization.routes");
+const purchaseRoutes = require("./Purchase.routes");
 
 
 module.exports={
@@ -12,5 +13,6 @@ module.exports={
     adminUserRoutes,
     employeeRoutes,
     orgUnitRoutes,
-    organizationRoutes
+    organizationRoutes,
+    purchaseRoutes
 }

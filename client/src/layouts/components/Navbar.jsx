@@ -49,6 +49,13 @@ import {
   NavigationMenuContent,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu.jsx";
+import { ShoppingCart } from "lucide-react";
+import { Truck } from "lucide-react";
+import { Package } from "lucide-react";
+import { Box } from "lucide-react";
+import { Tag } from "lucide-react";
+import { Archive } from "lucide-react";
+import { Upload } from "lucide-react";
 
 const ICONS = {
   // =====================
@@ -135,7 +142,19 @@ const ICONS = {
   activity: Activity,
   shield: Shield,
   "file-key": FileKey,
-  cog: Settings
+  cog: Settings,
+
+  // =====================
+  // PURCHASE
+  // =====================
+  "shopping-cart": ShoppingCart,
+  truck: Truck,
+  package: Package,
+  clipboard: Clipboard,
+  box: Box,
+  tag: Tag,
+  archive: Archive,
+  upload: Upload
 };
 
 function hasAccess(rbac, userPerms) {

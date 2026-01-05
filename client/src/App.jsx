@@ -25,6 +25,10 @@ import { Toaster } from "@/components/ui/sonner";
 import AllRoles from "@/modules/admin/roles/screens/AllRoles.jsx";
 import AddNewRole from "@/modules/admin/roles/screens/AddNewRole.jsx";
 import DynamicTitle from "./components/DynamicTitle";
+import UploadCategoriesPage from "./modules/purchase/categories/screens/UploadCategoriesPage";
+import AllCategoriesPage from "./modules/purchase/categories/screens/AllCategoriesPage";
+import AddNewCategoryPage from "./modules/purchase/categories/screens/AddNewCategoryPage";
+import AddNewProductPage from "./modules/purchase/categories/screens/AddNewProductPage";
 
 function App() {
   return (
@@ -103,6 +107,26 @@ function App() {
             <Route path="/admin/roles/add" element={
               <PermissionGuard requiredPermission={PERMISSIONS.ADMIN.ROLES}>
                 <AddNewRole />
+              </PermissionGuard>
+            } />
+            <Route path="/purchase/categories/upload" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.PURCHASE.CATEGORIES}>
+                <UploadCategoriesPage />
+              </PermissionGuard>
+            } />
+            <Route path="/purchase/categories" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.PURCHASE.CATEGORIES}>
+                <AllCategoriesPage />
+              </PermissionGuard>
+            } />
+            <Route path="/purchase/products/new" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.PURCHASE.CATEGORIES}>
+                <AddNewProductPage />
+              </PermissionGuard>
+            } />
+            <Route path="/purchase/categories/new" element={
+              <PermissionGuard requiredPermission={PERMISSIONS.PURCHASE.CATEGORIES}>
+                <AddNewCategoryPage />
               </PermissionGuard>
             } />
           </Route>
